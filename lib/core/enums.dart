@@ -22,6 +22,21 @@ enum HZFFormTimePickerType {
   amPm
 }
 
+enum HZFFormCalendarType { gregorian, hijri, persian, buddhist, japanese }
+
+/// Date format display types
+enum HZFFormDateFormatType {
+  mmddyyyy, // 12/31/2023
+  ddmmyyyy, // 31/12/2023
+  yyyymmdd, // 2023-12-31
+  custom, // For custom formatting
+  fullText, //  شنبه 04 تیر 1401
+  mediumText, // شنبه 04 تیر
+  shortText, // 04 تیر ,1401
+}
+
+enum HZFFormImageSource { camera, gallery, both }
+
 enum HZFFormFieldTypeEnum {
   cell,
   email,
@@ -29,8 +44,8 @@ enum HZFFormFieldTypeEnum {
   text,
   textPlain,
   spinner,
-  date,
-  dateRage,
+  datePicker,
+  dateRangePicker,
   timePicker,
   price,
   number,
