@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, unused_field
+
 import 'package:flutter/material.dart';
 import 'package:hzfform/hzfform.dart';
 
@@ -10,6 +12,7 @@ class MyForm extends StatefulWidget {
 
 class _MyFormState extends State<MyForm> {
   final _formController = HZFormController();
+  final _formKey = GlobalKey<FormState>();
 
   void _submitForm() {
     if (_formController.isValid) {
@@ -19,8 +22,18 @@ class _MyFormState extends State<MyForm> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    var spacer = height * 0.05;
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(title: Text('HZForm Example')),
       body: Padding(
         padding: EdgeInsets.all(16),
@@ -33,7 +46,7 @@ class _MyFormState extends State<MyForm> {
               controller: _formController,
               validator: (v) => v!.isEmpty ? 'Required' : null,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: spacer),
             ElevatedButton(
               onPressed: _submitForm,
               child: Text('Submit'),

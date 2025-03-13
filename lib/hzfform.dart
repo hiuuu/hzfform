@@ -1,8 +1,8 @@
-library hzform;
+library hzfform;
 
 // Export all components
-export 'src/form.dart';
-export 'src/controller.dart';
-export 'src/fields/hz_text_field.dart';
-export 'src/fields/hz_dropdown.dart';
-export 'src/fields/hz_checkbox.dart';
+export 'widgets/form.dart';
+export 'widgets/controller.dart';
+export 'fields/hz_text_field.dart';
+export 'fields/hz_dropdown.dart';
+export 'fields/hz_checkbox.dart';

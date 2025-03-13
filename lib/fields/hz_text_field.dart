@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../controller.dart';
+import '../widgets/controller.dart';
 
 class HZTextField extends StatefulWidget {
   final String name;
