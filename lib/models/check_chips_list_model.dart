@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'field_model.dart';
+import 'radio_chips_group_model.dart';
 import '../core/enums.dart';
 
 class HZFFormCheckChipsListModel extends HZFFormFieldModel {
@@ -156,54 +157,4 @@ class HZFFormCheckChipsDataModel {
       selectedTextColor: selectedTextColor,
     );
   }
-}
-
-/// Styling options for chips
-class HZFChipStyle {
-  /// Selected background color
-  final Color? selectedColor;
-
-  /// Unselected background color
-  final Color? backgroundColor;
-
-  /// Selected text color
-  final Color? selectedTextColor;
-
-  /// Unselected text color
-  final Color? textColor;
-
-  /// Border color
-  final Color? borderColor;
-
-  /// Selected border color
-  final Color? selectedBorderColor;
-
-  /// Chip shape
-  final ShapeBorder? shape;
-
-  /// Padding within chip
-  final EdgeInsets? padding;
-
-  /// Text style
-  final TextStyle? labelStyle;
-
-  /// Selected text style
-  final TextStyle? selectedLabelStyle;
-
-  /// Avatar/icon size
-  final double? avatarSize;
-
-  const HZFChipStyle({
-    this.selectedColor,
-    this.backgroundColor,
-    this.selectedTextColor,
-    this.textColor,
-    this.borderColor,
-    this.selectedBorderColor,
-    this.shape,
-    this.padding,
-    this.labelStyle,
-    this.selectedLabelStyle,
-    this.avatarSize,
-  });
 }
