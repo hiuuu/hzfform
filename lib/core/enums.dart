@@ -2,6 +2,26 @@ enum RequiredCheckListEnum { none, atLeastOneItem, allItem }
 
 enum HZFFormFieldStatusEnum { normal, success, error, disabled }
 
+enum HZFFormTimePickerType {
+  /// Standard material dial interface
+  dial,
+
+  /// iOS-style spinner wheel
+  spinner,
+
+  /// Input fields for hour/minute
+  input,
+
+  /// Compact dropdown style
+  dropdown,
+
+  /// 24-hour format
+  military,
+
+  /// 12-hour AM/PM format
+  amPm
+}
+
 enum HZFFormFieldTypeEnum {
   cell,
   email,
@@ -11,7 +31,7 @@ enum HZFFormFieldTypeEnum {
   spinner,
   date,
   dateRage,
-  time,
+  timePicker,
   price,
   number,
   checkList,
@@ -20,7 +40,6 @@ enum HZFFormFieldTypeEnum {
   masked,
   bankCard,
   imagePicker,
-  qrScanner,
   multiImagePicker,
   radioChips,
   checkChips,
