@@ -1,4 +1,4 @@
-library hzfform;
+library;
 
 // Export all components
 export 'widgets/form.dart';
