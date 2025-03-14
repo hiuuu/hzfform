@@ -65,8 +65,6 @@ enum MaskType {
 }
 
 enum HZFFormFieldTypeEnum {
-  cell,
-  email,
   password,
   text,
   textPlain,
@@ -78,7 +76,7 @@ enum HZFFormFieldTypeEnum {
   checkList,
   radioGroup,
   pinCode,
-  masked,
+  slider,
   bankCard,
   imagePicker,
   multiImagePicker,

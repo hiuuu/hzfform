@@ -10,7 +10,7 @@ export 'text_area_model.dart';
 export 'spinner_model.dart';
 export 'check_chips_list_model.dart';
 export 'check_list_model.dart';
-export 'field_model.dart';
+export 'slider_model.dart';
 export 'number_model.dart';
 export 'radio_group_model.dart';
 export 'time_picker_model.dart';
