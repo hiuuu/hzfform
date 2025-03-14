@@ -1,102 +1,384 @@
-import 'package:flutter/material.dart';
-import 'controller.dart';
+// ignore_for_file: use_super_parameters
 
+import 'package:flutter/material.dart';
+import '../fields/field_builders.dart';
+import '../fields/hzf_field_builder.dart';
+import '../models/field_model.dart';
+import 'actions.dart';
+import 'controller.dart';
+import 'enums.dart';
+import 'sections.dart';
+import 'styles.dart';
+
+/// Dynamic form builder with customizable fields and sections
 class HZFForm extends StatefulWidget {
-  /// Form controller to manage state
+  /// Form controller
   final HZFFormController controller;
 
-  /// Form fields and other widgets
-  final List<Widget> children;
+  /// Field models (used when not using sections)
+  final List<HZFFormFieldModel>? models;
 
-  /// Submit callback
-  final VoidCallback? onSubmit;
+  /// Form sections
+  final List<HZFFormSection>? sections;
 
-  /// Custom submit button
-  final Widget? submitButton;
+  /// Form style
+  final HZFFormStyle style;
 
-  /// Padding between form elements
-  final EdgeInsetsGeometry contentPadding;
+  /// Form actions
+  final HZFFormActions? actions;
 
-  /// Whether to add padding between fields in Percents
-  final double? spacingPercent;
+  /// Padding around the form
+  final EdgeInsets? padding;
 
   /// Scroll physics
   final ScrollPhysics? scrollPhysics;
 
+  /// Scroll controller
+  final ScrollController? scrollController;
+
+  /// Form completion callback
+  final Function(Map<String, dynamic>)? onSubmit;
+
+  /// Form change callback
+  final Function(Map<String, dynamic>)? onChanged;
+
+  /// Auto-validate mode
+  final AutovalidateMode autovalidateMode;
+
+  /// Custom field builders registry
+  static final Map<HZFFormFieldTypeEnum, FieldBuilder Function()>
+      _fieldBuilders = {};
+
+  /// Constructor
   const HZFForm({
     super.key,
     required this.controller,
-    required this.children,
-    this.onSubmit,
-    this.submitButton,
-    this.contentPadding = const EdgeInsets.all(16.0),
-    this.spacingPercent = 5,
+    this.models,
+    this.sections,
+    this.style = const HZFFormStyle(),
+    this.actions,
+    this.padding,
     this.scrollPhysics,
-  });
+    this.scrollController,
+    this.onSubmit,
+    this.onChanged,
+    this.autovalidateMode = AutovalidateMode.disabled,
+  }) : assert(models != null || sections != null,
+            'Either models or sections must be provided');
 
   @override
   State<HZFForm> createState() => _HZFFormState();
+
+  /// Register custom field builder
+  static void registerFieldBuilder(
+    HZFFormFieldTypeEnum type,
+    FieldBuilder Function() builderFactory,
+  ) {
+    _fieldBuilders[type] = builderFactory;
+  }
+
+  /// Register custom field builder with type string
+  static void registerCustomBuilder(
+    String typeString,
+    Widget Function(HZFFormFieldModel, HZFFormController, BuildContext) builder,
+  ) {
+    // Create custom enum value or use a mapping system
+    final customType = HZFFormFieldTypeEnum.custom;
+
+    _fieldBuilders[customType] = () => _CustomFieldBuilder(
+          typeString: typeString,
+          builderFn: builder,
+        );
+  }
+
+  /// Get field builders map
+  static Map<HZFFormFieldTypeEnum, FieldBuilder> getFieldBuilders() {
+    final builders = <HZFFormFieldTypeEnum, FieldBuilder>{};
+
+    // Initialize default builders
+    _initializeDefaultBuilders();
+
+    // Create instances of all registered builders
+    for (final entry in _fieldBuilders.entries) {
+      builders[entry.key] = entry.value();
+    }
+
+    return builders;
+  }
+
+  /// Initialize default field builders
+  static void _initializeDefaultBuilders() {
+    // Register default builders if not already registered
+    if (_fieldBuilders.isEmpty) {
+      _fieldBuilders[HZFFormFieldTypeEnum.text] = () => TextFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.searchableDropdown] =
+          () => SearchableDropdownBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.checkbox] =
+          () => CheckboxFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.datePicker] =
+          () => DatePickerFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.slider] = () => SliderFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.colorPicker] =
+          () => ColorPickerFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.mapPicker] =
+          () => MapPickerFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.signaturePicker] =
+          () => SignatureFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.metaData] =
+          () => MetaDataFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.qrCodePicker] =
+          () => QRCodeFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.documentPicker] =
+          () => DocumentPickerFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.videoPicker] =
+          () => VideoPickerFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.audioPicker] =
+          () => AudioPickerFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.imagePicker] =
+          () => ImagePickerFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.multiImagePicker] =
+          () => MultiImagePickerFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.radioChips] =
+          () => RadioChipsGroupBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.checkChips] =
+          () => CheckboxChipsListBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.textPlain] =
+          () => TextAreaFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.password] =
+          () => PasswordFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.dateRangePicker] =
+          () => DateRangePickerBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.timePicker] =
+          () => TimePickerFieldBuilder();
+    }
+  }
 }
 
 class _HZFFormState extends State<HZFForm> {
-  final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+    _registerFields();
+
+    // Listen for form changes
+    widget.controller.addListener(_handleFormChanged);
+
+    // Set auto-validate mode
+    if (widget.autovalidateMode == AutovalidateMode.always) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.controller.validate();
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(HZFForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Update controller listener if changed
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(_handleFormChanged);
+      widget.controller.addListener(_handleFormChanged);
+      _registerFields();
+    }
+
+    // Re-register fields if models or sections changed
+    if (oldWidget.models != widget.models ||
+        oldWidget.sections != widget.sections) {
+      _registerFields();
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_handleFormChanged);
+    super.dispose();
+  }
+
+  void _registerFields() {
+    // Register all fields with the controller
+    if (widget.models != null) {
+      widget.controller.registerFields(widget.models!);
+    }
+
+    if (widget.sections != null) {
+      for (final section in widget.sections!) {
+        widget.controller.registerFields(section.models);
+      }
+    }
+
+    // Register action buttons
+    if (widget.actions != null) {
+      if (widget.actions!.submitButton != null) {
+        widget.controller
+            .registerButton('submit', widget.actions!.submitButton!);
+      }
+      if (widget.actions!.cancelButton != null) {
+        widget.controller
+            .registerButton('cancel', widget.actions!.cancelButton!);
+      }
+      if (widget.actions!.resetButton != null) {
+        widget.controller.registerButton('reset', widget.actions!.resetButton!);
+      }
+    }
+  }
+
+  void _handleFormChanged() {
+    widget.onChanged?.call(widget.controller.getFormValues());
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: widget.contentPadding,
-        child: SingleChildScrollView(
-          physics: widget.scrollPhysics,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: _buildFormChildren(),
-          ),
-        ),
+    final effectiveStyle = widget.style;
+
+    return SingleChildScrollView(
+      physics: widget.scrollPhysics,
+      controller: widget.scrollController,
+      padding: widget.padding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Build sections or create default section from models
+          if (widget.sections != null)
+            ...widget.sections!.map((section) => HZFFormSectionWidget(
+                  section: section,
+                  controller: widget.controller,
+                  formStyle: effectiveStyle,
+                )),
+
+          if (widget.sections == null && widget.models != null)
+            HZFFormSectionWidget(
+              section: HZFFormSection(models: widget.models!),
+              controller: widget.controller,
+              formStyle: effectiveStyle,
+            ),
+
+          // Form actions
+          if (widget.actions != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: widget.actions!.build(
+                context,
+                widget.controller,
+                effectiveStyle,
+                onSubmit: widget.onSubmit,
+              ),
+            ),
+        ],
       ),
     );
   }
+}
 
-  List<Widget> _buildFormChildren() {
-    var height = MediaQuery.of(context).size.height;
-    // var width = MediaQuery.of(context).size.width;
-    var spacer = height * 0.05;
-    final List<Widget> formChildren = [];
+/// Field builder widget
+class HZFFormFieldWidget extends StatelessWidget {
+  final HZFFormFieldModel model;
+  final HZFFormController controller;
+  final FieldBuilder builder;
+  final HZFFormStyle style;
 
-    // Add children with optional padding
-    for (int i = 0; i < widget.children.length; i++) {
-      formChildren.add(widget.children[i]);
+  const HZFFormFieldWidget({
+    Key? key,
+    required this.model,
+    required this.controller,
+    required this.builder,
+    required this.style,
+  }) : super(key: key);
 
-      // Add padding between fields if needed
-      if (widget.spacingPercent != null && i < widget.children.length - 1) {
-        formChildren.add(SizedBox(height: spacer / 100));
-      }
+  @override
+  Widget build(BuildContext context) {
+    // Check visibility condition
+    if (!controller.isFieldVisible(model.tag)) {
+      return const SizedBox.shrink();
     }
 
-    // Add submit button if onSubmit provided
-    if (widget.submitButton != null) {
-      formChildren.add(SizedBox(height: spacer / 50));
-      formChildren.add(widget.submitButton!);
-    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Field title
+        if (model.showTitle != false && model.title != null)
+          Row(
+            children: [
+              Text(
+                model.title!,
+                style: style.titleStyle,
+              ),
+              if (model.required == true)
+                style.requiredIndicator ??
+                    const Text(
+                      ' *',
+                      style: TextStyle(color: Colors.red),
+                    ),
+            ],
+          ),
 
-    return formChildren;
+        if (model.showTitle != false && model.title != null)
+          const SizedBox(height: 8),
+
+        // Field content
+        builder.build(model, controller, context),
+
+        // Error message
+        AnimatedBuilder(
+          animation: controller,
+          builder: (context, _) {
+            final error = controller.getFieldError(model.tag);
+
+            if (error == null) {
+              return const SizedBox.shrink();
+            }
+
+            return Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: Text(
+                error,
+                style: style.errorStyle ??
+                    TextStyle(
+                      color: Colors.red[700],
+                      fontSize: 12,
+                    ),
+              ),
+            );
+          },
+        ),
+
+        // Helper message
+        if (model.helpMessage != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 4.0),
+            child: Text(
+              model.helpMessage!,
+              style: style.helpStyle ??
+                  TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                  ),
+            ),
+          ),
+      ],
+    );
   }
+}
 
-  void _handleSubmit() {
-    // Flutter form validation
-    if (_formKey.currentState?.validate() ?? false) {
-      _formKey.currentState?.save();
+/// Custom field builder implementation
+class _CustomFieldBuilder implements FieldBuilder {
+  final String typeString;
+  final Widget Function(HZFFormFieldModel, HZFFormController, BuildContext)
+      builderFn;
 
-      // Custom controller validation
-      final isValid = widget.controller.validateForm();
+  _CustomFieldBuilder({
+    required this.typeString,
+    required this.builderFn,
+  });
 
-      if (isValid && widget.onSubmit != null) {
-        widget.onSubmit!();
-      }
-    }
+  @override
+  Widget build(
+    HZFFormFieldModel model,
+    HZFFormController controller,
+    BuildContext context,
+  ) {
+    // Directly return the Widget from the builder function
+    return builderFn(model, controller, context);
   }
-
-  /// Public method to trigger form submission
-  void submitForm() => _handleSubmit();
 }

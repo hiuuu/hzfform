@@ -13,12 +13,14 @@ abstract class HZFFormFieldModel {
   bool? showTitle;
   HZFFormFieldStatusEnum status;
   RegExp? validateRegEx;
+  dynamic Function(dynamic)? customValidator;
   int? weight;
   FocusNode? focusNode;
   FocusNode? nextFocusNode;
   dynamic value;
   bool? enableReadOnly;
   VoidCallback? onTap;
+  dynamic Function(String, dynamic)? onDependencyChanged;
 
   HZFFormFieldModel({
     this.type,
@@ -32,10 +34,12 @@ abstract class HZFFormFieldModel {
     this.required,
     this.value,
     this.validateRegEx,
+    this.customValidator,
     this.weight,
     this.focusNode,
     this.nextFocusNode,
     this.onTap,
+    this.onDependencyChanged,
     HZFFormFieldStatusEnum? status,
     bool? enableReadOnly,
   })  : status = status ?? HZFFormFieldStatusEnum.normal,

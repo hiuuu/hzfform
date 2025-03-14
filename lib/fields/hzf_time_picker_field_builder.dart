@@ -6,7 +6,7 @@ import '../models/time_picker_model.dart';
 import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
-class TimePickerBuilder implements FieldBuilder {
+class TimePickerFieldBuilder implements FieldBuilder {
   @override
   Widget build(
     HZFFormFieldModel model,

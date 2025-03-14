@@ -2,6 +2,7 @@ export 'hzf_text_field_builder.dart';
 export 'hzf_password_field_builder.dart';
 export 'hzf_textarea_field_builder.dart';
 export 'hzf_check_list_builder.dart';
+export 'hzf_check_builder.dart';
 export 'hzf_check_chips_field_builder.dart';
 export 'hzf_date_picker_field_builder.dart';
 export 'hzf_date_range_field_builder.dart';

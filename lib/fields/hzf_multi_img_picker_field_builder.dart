@@ -10,7 +10,7 @@ import '../models/multi_image_picker_model.dart';
 import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
-class MultiImagePickerBuilder implements FieldBuilder {
+class MultiImagePickerFieldBuilder implements FieldBuilder {
   @override
   Widget build(
     HZFFormFieldModel model,

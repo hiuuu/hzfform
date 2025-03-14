@@ -138,31 +138,34 @@ class HZFFormFieldFactory {
         return PasswordFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.datePicker:
-        return DatePickerBuilder().build(model, controller, context);
+        return DatePickerFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.dateRangePicker:
         return DateRangePickerBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.imagePicker:
-        return ImagePickerBuilder().build(model, controller, context);
+        return ImagePickerFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.multiImagePicker:
-        return MultiImagePickerBuilder().build(model, controller, context);
+        return MultiImagePickerFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.radioChips:
         return RadioChipsGroupBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.checkChips:
-        return CheckChipsListBuilder().build(model, controller, context);
+        return CheckboxChipsListBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.checkList:
         return CheckListBuilder().build(model, controller, context);
+
+      case HZFFormFieldTypeEnum.checkbox:
+        return CheckboxFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.spinner:
         return SpinnerFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.timePicker:
-        return TimePickerBuilder().build(model, controller, context);
+        return TimePickerFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.number:
         return NumberFieldBuilder().build(model, controller, context);
@@ -171,7 +174,7 @@ class HZFFormFieldFactory {
         return RadioGroupFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.slider:
-        return SliderBuilder().build(model, controller, context);
+        return SliderFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.sliderRange:
         return SliderRangeBuilder().build(model, controller, context);
@@ -183,10 +186,10 @@ class HZFFormFieldFactory {
         return SearchableDropdownBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.mapPicker:
-        return MapPickerBuilder().build(model, controller, context);
+        return MapPickerFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.colorPicker:
-        return ColorPickerBuilder().build(model, controller, context);
+        return ColorPickerFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.qrCodePicker:
         return QRCodeFieldBuilder().build(model, controller, context);

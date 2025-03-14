@@ -97,6 +97,13 @@ enum CompressionQuality {
   high,
 }
 
+/// Button types
+enum HZFFormButtonType {
+  elevated,
+  outlined,
+  text,
+}
+
 enum HZFFormFieldTypeEnum {
   password,
   text,
@@ -107,6 +114,7 @@ enum HZFFormFieldTypeEnum {
   timePicker,
   number,
   checkList,
+  checkbox,
   radioGroup,
   slider,
   sliderRange,
@@ -124,4 +132,5 @@ enum HZFFormFieldTypeEnum {
   videoPicker,
   audioPicker,
   signaturePicker,
+  custom,
 }

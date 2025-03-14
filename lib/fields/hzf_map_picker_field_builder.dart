@@ -11,7 +11,7 @@ import '../models/map_picker_model.dart';
 import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
-class MapPickerBuilder implements FieldBuilder {
+class MapPickerFieldBuilder implements FieldBuilder {
   @override
   Widget build(
     HZFFormFieldModel model,

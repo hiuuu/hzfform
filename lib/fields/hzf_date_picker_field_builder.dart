@@ -7,7 +7,7 @@ import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
 /// Date picker field builder
-class DatePickerBuilder implements FieldBuilder {
+class DatePickerFieldBuilder implements FieldBuilder {
   @override
   Widget build(
     HZFFormFieldModel model,
