@@ -86,6 +86,8 @@ HZFForm(
 
 # HZFForm - Flutter Dynamic Form Builder
 
+# HZFForm - Flutter Dynamic Form Builder
+
 ## Installation
 
 ```yaml
@@ -139,7 +141,21 @@ ElevatedButton(
 
 ## Field Types
 
- Field Type  Model Class  Description  Text  `HZFFormTextFieldModel`  Text input with validation  Dropdown  `HZFFormDropdownModel`  Dropdown selection  Checkbox  `HZFFormCheckboxModel`  Single checkbox  Radio  `HZFFormRadioModel`  Radio button group  Date  `HZFFormDatePickerModel`  Date picker  Slider  `HZFFormSliderModel`  Value slider  Color  `HZFFormColorPickerModel`  Color selection  Map  `HZFFormMapPickerModel`  Location picker  Signature  `HZFFormSignatureModel`  Signature capture  Metadata  `HZFFormMetaDataModel`  Key-value pairs  QR Code  `HZFFormQRCodeModel`  QR code scanner/generator  Document  `HZFFormDocumentPickerModel`  Document upload/scan  Video  `HZFFormVideoPickerModel`  Video recording/selection  Audio  `HZFFormAudioPickerModel`  Audio recording/selection 
+ Field Type     | Model Class                     | Description
+ Text             `HZFFormTextFieldModel`           Text input with validation  
+ Dropdown         `HZFFormDropdownModel`            Dropdown selection  
+ Checkbox         `HZFFormCheckboxModel`            Single checkbox  
+ Radio            `HZFFormRadioModel`               Radio button group  
+ Date             `HZFFormDatePickerModel`          Date picker  
+ Slider           `HZFFormSliderModel`              Value slider  
+ Color            `HZFFormColorPickerModel`         Color selection  
+ Map              `HZFFormMapPickerModel`           Location picker  
+ Signature        `HZFFormSignatureModel`           Signature capture  
+ Metadata         `HZFFormMetaDataModel`            Key-value pairs  
+ QR Code          `HZFFormQRCodeModel`              QR code scanner/generator  
+ Document         `HZFFormDocumentPickerModel`      Document upload/scan  
+ Video            `HZFFormVideoPickerModel`         Video recording/selection  
+ Audio            `HZFFormAudioPickerModel`         Audio recording/selection 
 
 ## Advanced Configuration
 
@@ -375,3 +391,8 @@ HZFForm.registerCustomBuilder(
 - Use `weight` property to control field order
 - Consider form pagination for complex workflows
 - Optimize image compression in media fields
+
+
+
+
+
