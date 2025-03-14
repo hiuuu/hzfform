@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../core/controller.dart';
-import '../core/styles.dart';
+// import '../core/styles.dart';
 import '../models/check_model.dart';
 import '../models/field_model.dart';
 import 'hzf_field_builder.dart';
@@ -18,8 +18,8 @@ class CheckboxFieldBuilder implements FieldBuilder {
 
     // Use theme data from form style if available
     final theme = Theme.of(context);
-    final switchTheme =
-        Theme.of(context).extension<HZFFormStyle>()?.switchTheme;
+    // final switchTheme =
+    //     Theme.of(context).extension<HZFFormStyle>()?.switchTheme;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
