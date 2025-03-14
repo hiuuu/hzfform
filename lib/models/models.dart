@@ -19,3 +19,5 @@ export 'search_dropdown_model.dart';
 export 'meta_data_model.dart';
 export 'map_picker_model.dart';
 export 'color_picker_model.dart';
+export 'qrcode_picker_model.dart';
+export 'doc_picker_model.dart';

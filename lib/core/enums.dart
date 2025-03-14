@@ -83,6 +83,13 @@ enum ColorPickerMode {
   wheel, // Color wheel
 }
 
+/// QR code modes
+enum QRCodeMode {
+  generate, // Only generate QR codes
+  scan, // Only scan QR codes
+  both, // Generate and scan QR codes
+}
+
 enum HZFFormFieldTypeEnum {
   password,
   text,
@@ -106,4 +113,9 @@ enum HZFFormFieldTypeEnum {
   metaData,
   mapPicker,
   colorPicker,
+  qrCodePicker,
+  documentPicker,
+  videoPicker,
+  audioPicker,
+  signaturePicker,
 }

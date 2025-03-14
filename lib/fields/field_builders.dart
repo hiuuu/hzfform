@@ -19,3 +19,5 @@ export 'hzf_search_dropdown_field_builder.dart';
 export 'hzf_meta_data_field_builder.dart';
 export 'hzf_map_picker_field_builder.dart';
 export 'hzf_color_picker_field_builder.dart';
+export 'hzf_qrcode_picker_field_builder.dart';
+export 'hzf_doc_picker_field_builder.dart';

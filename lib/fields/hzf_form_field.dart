@@ -188,6 +188,12 @@ class HZFFormFieldFactory {
       case HZFFormFieldTypeEnum.colorPicker:
         return ColorPickerBuilder().build(model, controller, context);
 
+      case HZFFormFieldTypeEnum.qrCodePicker:
+        return QRCodeFieldBuilder().build(model, controller, context);
+
+      case HZFFormFieldTypeEnum.documentPicker:
+        return DocumentPickerFieldBuilder().build(model, controller, context);
+
       default:
         return const SizedBox(
           child: Text("Unsupported field type"),
@@ -196,5 +202,5 @@ class HZFFormFieldFactory {
   }
 }
 
-// TODO: please generate  ColorPickerBuilder ...
+// TODO: please generate audioPickerFieldBuilder, videoPickerFieldBuilder , signatureFieldBuilder
 // TODO: RTL support and localization and themes
