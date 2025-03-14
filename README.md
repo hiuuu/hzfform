@@ -1,3 +1,89 @@
+# HZFForm Package Overview
+
+A powerful, customizable Flutter forms library with rich field types, validation, and media support.
+
+## Dependencies
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Core dependencies
+  provider: ^6.0.5
+  intl: ^0.18.1
+  uuid: ^4.1.0
+  
+  # Field type support
+  google_maps_flutter: ^2.5.0
+  file_picker: ^6.1.1
+  image_picker: ^1.0.4
+  signature: ^5.4.0
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^3.4.1
+  dropdown_search: ^5.0.6
+  
+  # Media handling
+  path_provider: ^2.1.1
+  ffmpeg_kit_flutter: ^6.0.3
+  just_audio: ^0.9.35
+  permission_handler: ^11.0.1
+  
+  # Utilities
+  open_file: ^3.3.2
+  image: ^4.1.3
+  geocoding: ^2.1.1
+  geolocator: ^10.0.1
+```
+
+## Features
+
+→ **30+ Field Types**: From basic text to advanced media capture
+→ **Validation**: Built-in and custom validators
+→ **Form Sections**: Logical grouping of fields
+→ **Dependency Handling**: Fields that react to other fields
+→ **Media Support**: Document, signature, audio, video, location
+→ **Theming**: Comprehensive styling options
+
+## Usage Example
+
+```dart
+// Create form controller
+final formController = HZFFormController();
+
+// Define fields
+final fields = [
+  HZFFormTextFieldModel(
+    tag: 'name',
+    title: 'Full Name',
+    required: true,
+  ),
+  HZFFormEmailFieldModel(
+    tag: 'email',
+    title: 'Email Address',
+  ),
+  HZFFormSignatureModel(
+    tag: 'signature',
+    title: 'Signature',
+  ),
+];
+
+// Create form
+HZFForm(
+  controller: formController,
+  models: fields,
+  onSubmit: (data) {
+    print('Form submitted: $data');
+  },
+)
+```
+
+## Key Benefits
+
+ Feature  Benefit  Modular  Compose forms with reusable components  Extensible  Create custom field types  Reactive  Fields update based on dependencies  Validated  Comprehensive error checking  Media-rich  Camera, location, documents support  Cross-platform  Works on iOS, Android, and web 
+
+→ **Getting started**: 
+
 # HZFForm - Flutter Dynamic Form Builder
 
 ## Installation
