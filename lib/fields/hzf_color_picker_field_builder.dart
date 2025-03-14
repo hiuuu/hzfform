@@ -22,113 +22,117 @@ class ColorPickerFieldBuilder implements FieldBuilder {
             : Color(int.parse(colorModel.value.toString())))
         : colorModel.defaultColor ?? Colors.blue;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Color preview
-        InkWell(
-          onTap: colorModel.enableReadOnly == true
-              ? null
-              : () => _showColorPicker(
-                  context, colorModel, controller, selectedColor),
-          child: Container(
-            height: colorModel.previewHeight ?? 50,
-            decoration: BoxDecoration(
-              color: selectedColor,
-              borderRadius:
-                  BorderRadius.circular(colorModel.previewBorderRadius ?? 8),
-              border: Border.all(
-                color: Theme.of(context).dividerColor,
-                width: 1.0,
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Color preview
+          InkWell(
+            onTap: colorModel.enableReadOnly == true
+                ? null
+                : () => _showColorPicker(
+                    context, colorModel, controller, selectedColor),
+            child: Container(
+              height: colorModel.previewHeight ?? 50,
+              decoration: BoxDecoration(
+                color: selectedColor,
+                borderRadius:
+                    BorderRadius.circular(colorModel.previewBorderRadius ?? 8),
+                border: Border.all(
+                  color: Theme.of(context).dividerColor,
+                  width: 1.0,
+                ),
+                boxShadow: colorModel.showShadow
+                    ? [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: .1),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ]
+                    : null,
               ),
-              boxShadow: colorModel.showShadow
-                  ? [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: .1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
+              child: colorModel.showHexValue
+                  ? Center(
+                      child: Text(
+                        _colorToHex(selectedColor),
+                        style: TextStyle(
+                          color: _contrastColor(selectedColor),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ]
+                    )
                   : null,
             ),
-            child: colorModel.showHexValue
-                ? Center(
-                    child: Text(
-                      _colorToHex(selectedColor),
-                      style: TextStyle(
-                        color: _contrastColor(selectedColor),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )
-                : null,
           ),
-        ),
 
-        // Color picker button (optional)
-        if (colorModel.showPickerButton)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: TextButton.icon(
-                onPressed: colorModel.enableReadOnly == true
-                    ? null
-                    : () => _showColorPicker(
-                        context, colorModel, controller, selectedColor),
-                icon: Icon(colorModel.pickerButtonIcon ?? Icons.color_lens),
-                label: Text(colorModel.pickerButtonText ?? 'Change Color'),
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+          // Color picker button (optional)
+          if (colorModel.showPickerButton)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: TextButton.icon(
+                  onPressed: colorModel.enableReadOnly == true
+                      ? null
+                      : () => _showColorPicker(
+                          context, colorModel, controller, selectedColor),
+                  icon: Icon(colorModel.pickerButtonIcon ?? Icons.color_lens),
+                  label: Text(colorModel.pickerButtonText ?? 'Change Color'),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                  ),
                 ),
               ),
             ),
-          ),
 
-        // Predefined colors palette (optional)
-        if (colorModel.showPredefinedColors &&
-            colorModel.predefinedColors.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: colorModel.predefinedColors.map((color) {
-                final isSelected = selectedColor.toARGB32() == color.toARGB32();
-                return InkWell(
-                  onTap: colorModel.enableReadOnly == true
-                      ? null
-                      : () {
-                          controller.updateFieldValue(colorModel.tag, color);
-                          colorModel.onColorSelected?.call(color);
-                        },
-                  child: Container(
-                    width: colorModel.predefinedColorSize ?? 36,
-                    height: colorModel.predefinedColorSize ?? 36,
-                    decoration: BoxDecoration(
-                      color: color,
-                      borderRadius: BorderRadius.circular(
-                          colorModel.predefinedColorBorderRadius ?? 4),
-                      border: Border.all(
-                        color: isSelected
-                            ? Theme.of(context).primaryColor
-                            : Theme.of(context).dividerColor,
-                        width: isSelected ? 2.0 : 1.0,
+          // Predefined colors palette (optional)
+          if (colorModel.showPredefinedColors &&
+              colorModel.predefinedColors.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: colorModel.predefinedColors.map((color) {
+                  final isSelected =
+                      selectedColor.toARGB32() == color.toARGB32();
+                  return InkWell(
+                    onTap: colorModel.enableReadOnly == true
+                        ? null
+                        : () {
+                            controller.updateFieldValue(colorModel.tag, color);
+                            colorModel.onColorSelected?.call(color);
+                          },
+                    child: Container(
+                      width: colorModel.predefinedColorSize ?? 36,
+                      height: colorModel.predefinedColorSize ?? 36,
+                      decoration: BoxDecoration(
+                        color: color,
+                        borderRadius: BorderRadius.circular(
+                            colorModel.predefinedColorBorderRadius ?? 4),
+                        border: Border.all(
+                          color: isSelected
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).dividerColor,
+                          width: isSelected ? 2.0 : 1.0,
+                        ),
                       ),
+                      child: isSelected
+                          ? Icon(
+                              Icons.check,
+                              color: _contrastColor(color),
+                              size: 18,
+                            )
+                          : null,
                     ),
-                    child: isSelected
-                        ? Icon(
-                            Icons.check,
-                            color: _contrastColor(color),
-                            size: 18,
-                          )
-                        : null,
-                  ),
-                );
-              }).toList(),
+                  );
+                }).toList(),
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 

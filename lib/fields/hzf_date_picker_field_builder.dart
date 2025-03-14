@@ -16,31 +16,34 @@ class DatePickerFieldBuilder implements FieldBuilder {
   ) {
     final dateModel = model as HZFFormDatePickerModel;
 
-    return InkWell(
-      onTap: dateModel.enableReadOnly == true
-          ? null
-          : () => _showDatePicker(
-                context,
-                dateModel,
-                controller,
-              ),
-      child: InputDecorator(
-        decoration: InputDecoration(
-          hintText: dateModel.hint ?? 'Select date',
-          prefixIcon:
-              dateModel.prefixWidget ?? const Icon(Icons.calendar_today),
-          suffixIcon:
-              dateModel.postfixWidget ?? const Icon(Icons.arrow_drop_down),
-          border: const OutlineInputBorder(),
-          errorStyle: const TextStyle(height: 0),
-        ),
-        child: Text(
-          dateModel.value != null
-              ? dateModel.getFormattedDate() ?? 'Select date'
-              : dateModel.hint ?? 'Select date',
-          style: dateModel.value == null
-              ? TextStyle(color: Theme.of(context).hintColor)
-              : null,
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: dateModel.enableReadOnly == true
+            ? null
+            : () => _showDatePicker(
+                  context,
+                  dateModel,
+                  controller,
+                ),
+        child: InputDecorator(
+          decoration: InputDecoration(
+            hintText: dateModel.hint ?? 'Select date',
+            prefixIcon:
+                dateModel.prefixWidget ?? const Icon(Icons.calendar_today),
+            suffixIcon:
+                dateModel.postfixWidget ?? const Icon(Icons.arrow_drop_down),
+            border: const OutlineInputBorder(),
+            errorStyle: const TextStyle(height: 0),
+          ),
+          child: Text(
+            dateModel.value != null
+                ? dateModel.getFormattedDate() ?? 'Select date'
+                : dateModel.hint ?? 'Select date',
+            style: dateModel.value == null
+                ? TextStyle(color: Theme.of(context).hintColor)
+                : null,
+          ),
         ),
       ),
     );

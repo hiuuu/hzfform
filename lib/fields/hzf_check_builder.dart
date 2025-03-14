@@ -21,45 +21,49 @@ class CheckboxFieldBuilder implements FieldBuilder {
     // final switchTheme =
     //     Theme.of(context).extension<HZFFormStyle>()?.switchTheme;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        children: [
-          // Switch component
-          Switch(
-            value: value,
-            onChanged: checkboxModel.enableReadOnly == true
-                ? null
-                : (newValue) =>
-                    controller.updateFieldValue(model.tag, newValue),
-            activeColor: checkboxModel.activeColor ?? theme.colorScheme.primary,
-            activeTrackColor: checkboxModel.activeTrackColor,
-            inactiveThumbColor: checkboxModel.inactiveThumbColor,
-            inactiveTrackColor: checkboxModel.inactiveTrackColor,
-            thumbIcon: checkboxModel.thumbIcon,
-          ),
-
-          const SizedBox(width: 8),
-
-          // Label
-          Expanded(
-            child: GestureDetector(
-              onTap: checkboxModel.enableReadOnly == true
+    return Material(
+      type: MaterialType.transparency,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Row(
+          children: [
+            // Switch component
+            Switch(
+              value: value,
+              onChanged: checkboxModel.enableReadOnly == true
                   ? null
-                  : () => controller.updateFieldValue(model.tag, !value),
-              child: checkboxModel.labelBuilder?.call(context, value) ??
-                  Text(
-                    checkboxModel.label ?? checkboxModel.title ?? '',
-                    style: checkboxModel.labelStyle ??
-                        TextStyle(
-                          color: checkboxModel.enableReadOnly == true
-                              ? theme.disabledColor
-                              : theme.textTheme.bodyMedium?.color,
-                        ),
-                  ),
+                  : (newValue) =>
+                      controller.updateFieldValue(model.tag, newValue),
+              activeColor:
+                  checkboxModel.activeColor ?? theme.colorScheme.primary,
+              activeTrackColor: checkboxModel.activeTrackColor,
+              inactiveThumbColor: checkboxModel.inactiveThumbColor,
+              inactiveTrackColor: checkboxModel.inactiveTrackColor,
+              thumbIcon: checkboxModel.thumbIcon,
             ),
-          ),
-        ],
+
+            const SizedBox(width: 8),
+
+            // Label
+            Expanded(
+              child: GestureDetector(
+                onTap: checkboxModel.enableReadOnly == true
+                    ? null
+                    : () => controller.updateFieldValue(model.tag, !value),
+                child: checkboxModel.labelBuilder?.call(context, value) ??
+                    Text(
+                      checkboxModel.label ?? checkboxModel.title ?? '',
+                      style: checkboxModel.labelStyle ??
+                          TextStyle(
+                            color: checkboxModel.enableReadOnly == true
+                                ? theme.disabledColor
+                                : theme.textTheme.bodyMedium?.color,
+                          ),
+                    ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -18,17 +18,20 @@ class ImagePickerFieldBuilder implements FieldBuilder {
   ) {
     final imageModel = model as HZFFormImagePickerModel;
 
-    return ValueListenableBuilder<dynamic>(
-      valueListenable: _createValueNotifier(imageModel, controller),
-      builder: (context, value, _) {
-        return Column(
-          children: [
-            _buildImagePreview(context, imageModel, controller, value),
-            if (imageModel.enableReadOnly != true)
-              _buildPickerButton(context, imageModel, controller),
-          ],
-        );
-      },
+    return Material(
+      type: MaterialType.transparency,
+      child: ValueListenableBuilder<dynamic>(
+        valueListenable: _createValueNotifier(imageModel, controller),
+        builder: (context, value, _) {
+          return Column(
+            children: [
+              _buildImagePreview(context, imageModel, controller, value),
+              if (imageModel.enableReadOnly != true)
+                _buildPickerButton(context, imageModel, controller),
+            ],
+          );
+        },
+      ),
     );
   }
 

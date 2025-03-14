@@ -20,55 +20,60 @@ class SliderRangeFieldBuilder implements FieldBuilder {
     // Current range value
     final currentRange = _getCurrentRange(rangeModel);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Value display
-        if (rangeModel.showValues)
-          _buildRangeDisplay(rangeModel, currentRange, theme),
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Value display
+          if (rangeModel.showValues)
+            _buildRangeDisplay(rangeModel, currentRange, theme),
 
-        // Range Slider
-        RangeSlider(
-          values: currentRange,
-          min: rangeModel.min,
-          max: rangeModel.max,
-          divisions: rangeModel.divisions,
-          labels: RangeLabels(
-            rangeModel.formatValue?.call(currentRange.start) ??
-                currentRange.start.toStringAsFixed(rangeModel.decimalPrecision),
-            rangeModel.formatValue?.call(currentRange.end) ??
-                currentRange.end.toStringAsFixed(rangeModel.decimalPrecision),
+          // Range Slider
+          RangeSlider(
+            values: currentRange,
+            min: rangeModel.min,
+            max: rangeModel.max,
+            divisions: rangeModel.divisions,
+            labels: RangeLabels(
+              rangeModel.formatValue?.call(currentRange.start) ??
+                  currentRange.start
+                      .toStringAsFixed(rangeModel.decimalPrecision),
+              rangeModel.formatValue?.call(currentRange.end) ??
+                  currentRange.end.toStringAsFixed(rangeModel.decimalPrecision),
+            ),
+            activeColor: rangeModel.activeColor ?? theme.primaryColor,
+            inactiveColor: rangeModel.inactiveColor ??
+                theme.disabledColor.withValues(alpha: .3),
+            onChanged: rangeModel.enableReadOnly == true
+                ? null
+                : (RangeValues range) {
+                    final roundedRange = RangeValues(
+                      _roundToDecimalPrecision(
+                          range.start, rangeModel.decimalPrecision),
+                      _roundToDecimalPrecision(
+                          range.end, rangeModel.decimalPrecision),
+                    );
+
+                    // Check minimum span requirement
+                    if (rangeModel.minSpan != null &&
+                        roundedRange.end - roundedRange.start <
+                            rangeModel.minSpan!) {
+                      return; // Skip update if below minimum span
+                    }
+
+                    controller.updateFieldValue(rangeModel.tag, roundedRange);
+                    rangeModel.onChanged?.call(roundedRange);
+                  },
+            onChangeStart: rangeModel.onChangeStart,
+            onChangeEnd: rangeModel.onChangeEnd,
           ),
-          activeColor: rangeModel.activeColor ?? theme.primaryColor,
-          inactiveColor: rangeModel.inactiveColor ??
-              theme.disabledColor.withValues(alpha: .3),
-          onChanged: rangeModel.enableReadOnly == true
-              ? null
-              : (RangeValues range) {
-                  final roundedRange = RangeValues(
-                    _roundToDecimalPrecision(
-                        range.start, rangeModel.decimalPrecision),
-                    _roundToDecimalPrecision(
-                        range.end, rangeModel.decimalPrecision),
-                  );
 
-                  // Check minimum span requirement
-                  if (rangeModel.minSpan != null &&
-                      roundedRange.end - roundedRange.start <
-                          rangeModel.minSpan!) {
-                    return; // Skip update if below minimum span
-                  }
-
-                  controller.updateFieldValue(rangeModel.tag, roundedRange);
-                  rangeModel.onChanged?.call(roundedRange);
-                },
-          onChangeStart: rangeModel.onChangeStart,
-          onChangeEnd: rangeModel.onChangeEnd,
-        ),
-
-        // Min/Max labels
-        if (rangeModel.showMinMaxLabels) _buildMinMaxLabels(rangeModel, theme),
-      ],
+          // Min/Max labels
+          if (rangeModel.showMinMaxLabels)
+            _buildMinMaxLabels(rangeModel, theme),
+        ],
+      ),
     );
   }
 

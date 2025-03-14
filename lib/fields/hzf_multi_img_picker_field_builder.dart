@@ -19,36 +19,39 @@ class MultiImagePickerFieldBuilder implements FieldBuilder {
   ) {
     final imageModel = model as HZFFormMultiImagePickerModel;
 
-    return ValueListenableBuilder<List<dynamic>>(
-      valueListenable: _createValueNotifier(imageModel, controller),
-      builder: (context, images, _) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Image grid
-            if (images.isNotEmpty)
-              _buildImageGrid(context, imageModel, controller, images),
+    return Material(
+      type: MaterialType.transparency,
+      child: ValueListenableBuilder<List<dynamic>>(
+        valueListenable: _createValueNotifier(imageModel, controller),
+        builder: (context, images, _) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image grid
+              if (images.isNotEmpty)
+                _buildImageGrid(context, imageModel, controller, images),
 
-            // Add button (if not read-only and not at max)
-            if (imageModel.enableReadOnly != true &&
-                !imageModel.isMaxImagesReached)
-              _buildAddButton(context, imageModel, controller),
+              // Add button (if not read-only and not at max)
+              if (imageModel.enableReadOnly != true &&
+                  !imageModel.isMaxImagesReached)
+                _buildAddButton(context, imageModel, controller),
 
-            // Image count indicator
-            if (images.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  '${images.length}/${imageModel.maximumImageCount?.toInt() ?? '∞'} images',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
+              // Image count indicator
+              if (images.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    '${images.length}/${imageModel.maximumImageCount?.toInt() ?? '∞'} images',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[600],
+                    ),
                   ),
                 ),
-              ),
-          ],
-        );
-      },
+            ],
+          );
+        },
+      ),
     );
   }
 

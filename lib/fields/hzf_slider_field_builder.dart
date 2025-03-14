@@ -17,41 +17,45 @@ class SliderFieldBuilder implements FieldBuilder {
     final sliderModel = model as HZFFormSliderModel;
     final theme = Theme.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Value display
-        if (sliderModel.showValue) _buildValueDisplay(sliderModel, theme),
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Value display
+          if (sliderModel.showValue) _buildValueDisplay(sliderModel, theme),
 
-        // Slider
-        Slider(
-          value: _getCurrentValue(sliderModel),
-          min: sliderModel.min,
-          max: sliderModel.max,
-          divisions: sliderModel.divisions,
-          label: sliderModel.formatValue?.call(_getCurrentValue(sliderModel)) ??
-              _getCurrentValue(sliderModel)
-                  .toStringAsFixed(sliderModel.decimalPrecision),
-          activeColor: sliderModel.activeColor ?? theme.primaryColor,
-          inactiveColor: sliderModel.inactiveColor ??
-              theme.disabledColor.withValues(alpha: .3),
-          thumbColor: sliderModel.thumbColor,
-          onChanged: sliderModel.enableReadOnly == true
-              ? null
-              : (value) {
-                  final roundedValue = _roundToDecimalPrecision(
-                      value, sliderModel.decimalPrecision);
-                  controller.updateFieldValue(sliderModel.tag, roundedValue);
-                  sliderModel.onChanged?.call(roundedValue);
-                },
-          onChangeStart: sliderModel.onChangeStart,
-          onChangeEnd: sliderModel.onChangeEnd,
-        ),
+          // Slider
+          Slider(
+            value: _getCurrentValue(sliderModel),
+            min: sliderModel.min,
+            max: sliderModel.max,
+            divisions: sliderModel.divisions,
+            label:
+                sliderModel.formatValue?.call(_getCurrentValue(sliderModel)) ??
+                    _getCurrentValue(sliderModel)
+                        .toStringAsFixed(sliderModel.decimalPrecision),
+            activeColor: sliderModel.activeColor ?? theme.primaryColor,
+            inactiveColor: sliderModel.inactiveColor ??
+                theme.disabledColor.withValues(alpha: .3),
+            thumbColor: sliderModel.thumbColor,
+            onChanged: sliderModel.enableReadOnly == true
+                ? null
+                : (value) {
+                    final roundedValue = _roundToDecimalPrecision(
+                        value, sliderModel.decimalPrecision);
+                    controller.updateFieldValue(sliderModel.tag, roundedValue);
+                    sliderModel.onChanged?.call(roundedValue);
+                  },
+            onChangeStart: sliderModel.onChangeStart,
+            onChangeEnd: sliderModel.onChangeEnd,
+          ),
 
-        // Min/Max labels
-        if (sliderModel.showMinMaxLabels)
-          _buildMinMaxLabels(sliderModel, theme),
-      ],
+          // Min/Max labels
+          if (sliderModel.showMinMaxLabels)
+            _buildMinMaxLabels(sliderModel, theme),
+        ],
+      ),
     );
   }
 

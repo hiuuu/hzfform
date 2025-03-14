@@ -15,30 +15,33 @@ class TimePickerFieldBuilder implements FieldBuilder {
   ) {
     final timeModel = model as HZFFormTimePickerModel;
 
-    return InkWell(
-      onTap: timeModel.enableReadOnly == true
-          ? null
-          : () => _showTimePicker(
-                context,
-                timeModel,
-                controller,
-              ),
-      child: InputDecorator(
-        decoration: InputDecoration(
-          hintText: timeModel.hint ?? 'Select time',
-          prefixIcon: timeModel.prefixWidget ?? const Icon(Icons.access_time),
-          suffixIcon:
-              timeModel.postfixWidget ?? const Icon(Icons.arrow_drop_down),
-          border: const OutlineInputBorder(),
-          errorStyle: const TextStyle(height: 0),
-        ),
-        child: Text(
-          timeModel.value != null
-              ? _formatTimeOfDay(timeModel.value, timeModel.timeFormat)
-              : timeModel.hint ?? 'Select time',
-          style: timeModel.value == null
-              ? TextStyle(color: Theme.of(context).hintColor)
-              : null,
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: timeModel.enableReadOnly == true
+            ? null
+            : () => _showTimePicker(
+                  context,
+                  timeModel,
+                  controller,
+                ),
+        child: InputDecorator(
+          decoration: InputDecoration(
+            hintText: timeModel.hint ?? 'Select time',
+            prefixIcon: timeModel.prefixWidget ?? const Icon(Icons.access_time),
+            suffixIcon:
+                timeModel.postfixWidget ?? const Icon(Icons.arrow_drop_down),
+            border: const OutlineInputBorder(),
+            errorStyle: const TextStyle(height: 0),
+          ),
+          child: Text(
+            timeModel.value != null
+                ? _formatTimeOfDay(timeModel.value, timeModel.timeFormat)
+                : timeModel.hint ?? 'Select time',
+            style: timeModel.value == null
+                ? TextStyle(color: Theme.of(context).hintColor)
+                : null,
+          ),
         ),
       ),
     );

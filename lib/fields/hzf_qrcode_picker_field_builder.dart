@@ -18,23 +18,27 @@ class QRCodeFieldBuilder implements FieldBuilder {
     final qrModel = model as HZFFormQRCodeModel;
     final value = qrModel.value as String? ?? qrModel.defaultData ?? '';
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // QR code display
-        if (qrModel.mode == QRCodeMode.generate ||
-            qrModel.mode == QRCodeMode.both)
-          _buildQRCode(value, qrModel, context),
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // QR code display
+          if (qrModel.mode == QRCodeMode.generate ||
+              qrModel.mode == QRCodeMode.both)
+            _buildQRCode(value, qrModel, context),
 
-        const SizedBox(height: 8),
+          const SizedBox(height: 8),
 
-        // Value input field or scanner button
-        if (qrModel.showInputField)
-          _buildInputField(value, qrModel, controller),
+          // Value input field or scanner button
+          if (qrModel.showInputField)
+            _buildInputField(value, qrModel, controller),
 
-        if (qrModel.mode == QRCodeMode.scan || qrModel.mode == QRCodeMode.both)
-          _buildScanButton(qrModel, controller, context),
-      ],
+          if (qrModel.mode == QRCodeMode.scan ||
+              qrModel.mode == QRCodeMode.both)
+            _buildScanButton(qrModel, controller, context),
+        ],
+      ),
     );
   }
 

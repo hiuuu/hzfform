@@ -38,72 +38,75 @@ class TextFieldBuilder implements FieldBuilder {
       );
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ValueListenableBuilder(
-            valueListenable: isListening,
-            builder: (context, listening, _) {
-              return Stack(
-                alignment: Alignment.centerRight,
-                children: [
-                  TextFormField(
-                    controller: maskController,
-                    decoration:
-                        _buildInputDecoration(textModel, context, listening),
-                    keyboardType: _getKeyboardType(textModel),
-                    textCapitalization:
-                        textModel.textCapitalization ?? TextCapitalization.none,
-                    textInputAction:
-                        textModel.textInputAction ?? TextInputAction.next,
-                    maxLines: textModel.maxLines ?? 1,
-                    minLines: textModel.minLines,
-                    maxLength: textModel.maxLength,
-                    inputFormatters: _buildInputFormatters(textModel),
-                    obscureText: textModel.obscureText ?? false,
-                    enabled: textModel.enableReadOnly != true,
-                    focusNode: textModel.focusNode,
-                    style: textModel.textStyle,
-                    textAlign: textModel.textAlign ?? TextAlign.start,
-                    cursorColor: textModel.cursorColor,
-                    showCursor: textModel.showCursor,
-                    textDirection: textModel.textDirection,
-                    autofillHints: textModel.autofillHints,
-                    onChanged: (value) {
-                      controller.updateFieldValue(textModel.tag, value);
-                      textModel.onChanged?.call(value);
-                    },
-                    onFieldSubmitted: (_) {
-                      if (textModel.nextFocusNode != null) {
-                        FocusScope.of(context)
-                            .requestFocus(textModel.nextFocusNode);
-                      }
-                      // ignore: no_wildcard_variable_uses
-                      textModel.onFieldSubmitted?.call(_);
-                    },
-                  ),
-                  if (listening)
-                    Positioned(
-                      right: 12,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: Colors.red.withValues(alpha: .2),
-                          shape: BoxShape.circle,
-                        ),
-                        child:
-                            const Icon(Icons.mic, color: Colors.red, size: 20),
-                      ),
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ValueListenableBuilder(
+              valueListenable: isListening,
+              builder: (context, listening, _) {
+                return Stack(
+                  alignment: Alignment.centerRight,
+                  children: [
+                    TextFormField(
+                      controller: maskController,
+                      decoration:
+                          _buildInputDecoration(textModel, context, listening),
+                      keyboardType: _getKeyboardType(textModel),
+                      textCapitalization: textModel.textCapitalization ??
+                          TextCapitalization.none,
+                      textInputAction:
+                          textModel.textInputAction ?? TextInputAction.next,
+                      maxLines: textModel.maxLines ?? 1,
+                      minLines: textModel.minLines,
+                      maxLength: textModel.maxLength,
+                      inputFormatters: _buildInputFormatters(textModel),
+                      obscureText: textModel.obscureText ?? false,
+                      enabled: textModel.enableReadOnly != true,
+                      focusNode: textModel.focusNode,
+                      style: textModel.textStyle,
+                      textAlign: textModel.textAlign ?? TextAlign.start,
+                      cursorColor: textModel.cursorColor,
+                      showCursor: textModel.showCursor,
+                      textDirection: textModel.textDirection,
+                      autofillHints: textModel.autofillHints,
+                      onChanged: (value) {
+                        controller.updateFieldValue(textModel.tag, value);
+                        textModel.onChanged?.call(value);
+                      },
+                      onFieldSubmitted: (_) {
+                        if (textModel.nextFocusNode != null) {
+                          FocusScope.of(context)
+                              .requestFocus(textModel.nextFocusNode);
+                        }
+                        // ignore: no_wildcard_variable_uses
+                        textModel.onFieldSubmitted?.call(_);
+                      },
                     ),
-                ],
-              );
-            }),
+                    if (listening)
+                      Positioned(
+                        right: 12,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: Colors.red.withValues(alpha: .2),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.mic,
+                              color: Colors.red, size: 20),
+                        ),
+                      ),
+                  ],
+                );
+              }),
 
-        // Character counter (if enabled but not showing in decoration)
-        if (textModel.showCounter &&
-            textModel.counterPosition == CounterPosition.below)
-          _buildExternalCounter(maskController, textModel),
-      ],
+          // Character counter (if enabled but not showing in decoration)
+          if (textModel.showCounter &&
+              textModel.counterPosition == CounterPosition.below)
+            _buildExternalCounter(maskController, textModel),
+        ],
+      ),
     );
   }
 

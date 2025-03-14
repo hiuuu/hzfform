@@ -16,37 +16,40 @@ class SearchableDropdownBuilder implements FieldBuilder {
     final dropdownModel = model as HZFFormSearchableDropdownModel;
     final theme = Theme.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Dropdown field with search
-        DropdownSearch<HZFDropdownItem>(
-          popupProps: _buildPopupProps(dropdownModel, theme),
-          dropdownDecoratorProps: _buildDecoratorProps(dropdownModel),
-          items: dropdownModel.items,
-          selectedItem: _findSelectedItem(dropdownModel),
-          itemAsString: (item) => item.label,
-          onChanged: dropdownModel.enableReadOnly == true
-              ? null
-              : (value) {
-                  if (value != null) {
-                    controller.updateFieldValue(dropdownModel.tag, value.id);
-                    dropdownModel.onItemSelected?.call(value);
-                  }
-                },
-          asyncItems: dropdownModel.asyncItemsCallback != null
-              ? (String filter) => _handleAsyncSearch(filter, dropdownModel)
-              : null,
-          compareFn: (item1, item2) => item1.id == item2.id,
-          clearButtonProps: ClearButtonProps(
-            isVisible:
-                dropdownModel.showClearButton && dropdownModel.value != null,
-            icon: Icon(dropdownModel.clearIcon ?? Icons.clear),
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Dropdown field with search
+          DropdownSearch<HZFDropdownItem>(
+            popupProps: _buildPopupProps(dropdownModel, theme),
+            dropdownDecoratorProps: _buildDecoratorProps(dropdownModel),
+            items: dropdownModel.items,
+            selectedItem: _findSelectedItem(dropdownModel),
+            itemAsString: (item) => item.label,
+            onChanged: dropdownModel.enableReadOnly == true
+                ? null
+                : (value) {
+                    if (value != null) {
+                      controller.updateFieldValue(dropdownModel.tag, value.id);
+                      dropdownModel.onItemSelected?.call(value);
+                    }
+                  },
+            asyncItems: dropdownModel.asyncItemsCallback != null
+                ? (String filter) => _handleAsyncSearch(filter, dropdownModel)
+                : null,
+            compareFn: (item1, item2) => item1.id == item2.id,
+            clearButtonProps: ClearButtonProps(
+              isVisible:
+                  dropdownModel.showClearButton && dropdownModel.value != null,
+              icon: Icon(dropdownModel.clearIcon ?? Icons.clear),
+            ),
+            filterFn: dropdownModel.customFilterFn,
+            enabled: dropdownModel.enableReadOnly != true,
           ),
-          filterFn: dropdownModel.customFilterFn,
-          enabled: dropdownModel.enableReadOnly != true,
-        ),
-      ],
+        ],
+      ),
     );
   }
 

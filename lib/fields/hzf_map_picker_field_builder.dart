@@ -23,58 +23,61 @@ class MapPickerFieldBuilder implements FieldBuilder {
     // Current location value
     final locationValue = mapModel.value as MapLocation?;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Preview map with selected location
-        if (locationValue != null) _buildMapPreview(locationValue, mapModel),
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Preview map with selected location
+          if (locationValue != null) _buildMapPreview(locationValue, mapModel),
 
-        const SizedBox(height: 8),
+          const SizedBox(height: 8),
 
-        // Map picker button
-        ElevatedButton.icon(
-          onPressed: mapModel.enableReadOnly == true
-              ? null
-              : () =>
-                  _showMapPicker(context, mapModel, controller, locationValue),
-          icon: Icon(mapModel.pickerIcon ?? Icons.map),
-          label: Text(mapModel.buttonText ?? 'Select Location'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: mapModel.buttonColor,
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-          ),
-        ),
-
-        // Display selected address
-        if (locationValue != null && locationValue.address != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              children: [
-                Icon(Icons.location_on, size: 16, color: Colors.grey[600]),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: Text(
-                    locationValue.address!,
-                    style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                if (!mapModel.enableReadOnly!)
-                  IconButton(
-                    icon: const Icon(Icons.clear, size: 18),
-                    onPressed: () {
-                      controller.updateFieldValue(mapModel.tag, null);
-                    },
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                  ),
-              ],
+          // Map picker button
+          ElevatedButton.icon(
+            onPressed: mapModel.enableReadOnly == true
+                ? null
+                : () => _showMapPicker(
+                    context, mapModel, controller, locationValue),
+            icon: Icon(mapModel.pickerIcon ?? Icons.map),
+            label: Text(mapModel.buttonText ?? 'Select Location'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: mapModel.buttonColor,
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             ),
           ),
-      ],
+
+          // Display selected address
+          if (locationValue != null && locationValue.address != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Row(
+                children: [
+                  Icon(Icons.location_on, size: 16, color: Colors.grey[600]),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      locationValue.address!,
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  if (!mapModel.enableReadOnly!)
+                    IconButton(
+                      icon: const Icon(Icons.clear, size: 18),
+                      onPressed: () {
+                        controller.updateFieldValue(mapModel.tag, null);
+                      },
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                ],
+              ),
+            ),
+        ],
+      ),
     );
   }
 

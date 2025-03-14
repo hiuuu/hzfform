@@ -16,10 +16,13 @@ class MetaDataFieldBuilder implements FieldBuilder {
     final metaModel = model as HZFFormMetaDataModel;
 
     // Create state notifier for entries
-    return _MetaDataFieldState(
-      model: metaModel,
-      controller: controller,
-      context: context,
+    return Material(
+      type: MaterialType.transparency,
+      child: _MetaDataFieldState(
+        model: metaModel,
+        controller: controller,
+        context: context,
+      ),
     );
   }
 }

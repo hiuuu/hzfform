@@ -18,52 +18,55 @@ class SignatureFieldBuilder implements FieldBuilder {
     final sigModel = model as HZFFormSignatureModel;
     final hasSignature = sigModel.value != null;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Signature canvas or preview
-        Container(
-          height: sigModel.height ?? 200,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey[300]!),
-            borderRadius: BorderRadius.circular(8),
-            color: sigModel.backgroundColor ?? Colors.white,
-          ),
-          child: hasSignature
-              ? _buildSignaturePreview(sigModel, controller)
-              : _buildSignatureCanvas(sigModel, controller),
-        ),
-
-        // Action buttons
-        if (sigModel.enableReadOnly != true)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                if (hasSignature)
-                  TextButton.icon(
-                    onPressed: () =>
-                        controller.updateFieldValue(sigModel.tag, null),
-                    icon: Icon(sigModel.clearIcon ?? Icons.clear),
-                    label: Text(sigModel.clearButtonText ?? 'Clear'),
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.red,
-                    ),
-                  )
-                else ...[
-                  // Stroke width selector
-                  if (sigModel.showStrokeWidthSelector)
-                    _buildStrokeSelector(sigModel, controller),
-
-                  // Color selector
-                  if (sigModel.showColorSelector)
-                    _buildColorSelector(sigModel, controller),
-                ]
-              ],
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Signature canvas or preview
+          Container(
+            height: sigModel.height ?? 200,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey[300]!),
+              borderRadius: BorderRadius.circular(8),
+              color: sigModel.backgroundColor ?? Colors.white,
             ),
+            child: hasSignature
+                ? _buildSignaturePreview(sigModel, controller)
+                : _buildSignatureCanvas(sigModel, controller),
           ),
-      ],
+
+          // Action buttons
+          if (sigModel.enableReadOnly != true)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (hasSignature)
+                    TextButton.icon(
+                      onPressed: () =>
+                          controller.updateFieldValue(sigModel.tag, null),
+                      icon: Icon(sigModel.clearIcon ?? Icons.clear),
+                      label: Text(sigModel.clearButtonText ?? 'Clear'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.red,
+                      ),
+                    )
+                  else ...[
+                    // Stroke width selector
+                    if (sigModel.showStrokeWidthSelector)
+                      _buildStrokeSelector(sigModel, controller),
+
+                    // Color selector
+                    if (sigModel.showColorSelector)
+                      _buildColorSelector(sigModel, controller),
+                  ]
+                ],
+              ),
+            ),
+        ],
+      ),
     );
   }
 

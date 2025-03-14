@@ -14,24 +14,27 @@ class CheckboxChipsListBuilder implements FieldBuilder {
   ) {
     final chipsModel = model as HZFFormCheckChipsListModel;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Filter option
-        if (chipsModel.showSearchFilter == true)
-          _buildSearchFilter(chipsModel, controller, context),
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Filter option
+          if (chipsModel.showSearchFilter == true)
+            _buildSearchFilter(chipsModel, controller, context),
 
-        // Chips layout
-        Wrap(
-          spacing: 8.0,
-          runSpacing: 8.0,
-          children: _buildChips(chipsModel, controller, context),
-        ),
+          // Chips layout
+          Wrap(
+            spacing: 8.0,
+            runSpacing: 8.0,
+            children: _buildChips(chipsModel, controller, context),
+          ),
 
-        // Selected count
-        if (chipsModel.showSelectedCount == true)
-          _buildSelectedCount(chipsModel),
-      ],
+          // Selected count
+          if (chipsModel.showSelectedCount == true)
+            _buildSelectedCount(chipsModel),
+        ],
+      ),
     );
   }
 

@@ -15,58 +15,61 @@ class CheckListFieldBuilder implements FieldBuilder {
     final checkModel = model as HZFFormCheckListModel;
     final selectedValues = (model.value as List<String>?) ?? [];
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Search filter
-        if (checkModel.enableSearch) _buildSearchField(context, checkModel),
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Search filter
+          if (checkModel.enableSearch) _buildSearchField(context, checkModel),
 
-        // Items list
-        AnimatedBuilder(
-          animation: checkModel.searchController,
-          builder: (context, _) {
-            final filteredItems = _getFilteredItems(checkModel);
+          // Items list
+          AnimatedBuilder(
+            animation: checkModel.searchController,
+            builder: (context, _) {
+              final filteredItems = _getFilteredItems(checkModel);
 
-            return Column(
-              children: [
-                // List items
-                ...filteredItems.map((item) => _buildCheckItem(
-                    item, checkModel, selectedValues, controller, context)),
+              return Column(
+                children: [
+                  // List items
+                  ...filteredItems.map((item) => _buildCheckItem(
+                      item, checkModel, selectedValues, controller, context)),
 
-                // No results message
-                if (filteredItems.isEmpty &&
-                    checkModel.searchController.text.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Center(
-                      child: Text(
-                        checkModel.noResultsText ?? 'No matching items',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontStyle: FontStyle.italic,
+                  // No results message
+                  if (filteredItems.isEmpty &&
+                      checkModel.searchController.text.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(
+                        child: Text(
+                          checkModel.noResultsText ?? 'No matching items',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontStyle: FontStyle.italic,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-              ],
-            );
-          },
-        ),
-
-        // Selection counter
-        if (checkModel.showCounter)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              '${selectedValues.length}/${checkModel.items.length} selected',
-              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-            ),
+                ],
+              );
+            },
           ),
 
-        // Actions row
-        if (checkModel.enableBulkActions && !checkModel.enableReadOnly!)
-          _buildActionButtons(checkModel, controller, selectedValues),
-      ],
+          // Selection counter
+          if (checkModel.showCounter)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                '${selectedValues.length}/${checkModel.items.length} selected',
+                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              ),
+            ),
+
+          // Actions row
+          if (checkModel.enableBulkActions && !checkModel.enableReadOnly!)
+            _buildActionButtons(checkModel, controller, selectedValues),
+        ],
+      ),
     );
   }
 

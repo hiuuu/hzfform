@@ -16,186 +16,190 @@ class BankCardFieldBuilder implements FieldBuilder {
   ) {
     final cardModel = model as HZFFormBankCardModel;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Card number field with formatting
-        TextFormField(
-          initialValue: cardModel.value?.number,
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-            _CreditCardFormatter(),
-          ],
-          maxLength: 19, // 16 digits + 3 spaces
-          decoration: InputDecoration(
-            hintText: cardModel.hint ?? 'Card number',
-            prefixIcon: cardModel.prefixWidget ?? const Icon(Icons.credit_card),
-            suffixIcon: _buildCardTypeIcon(cardModel.detectedCardType),
-            border: const OutlineInputBorder(),
-            counterText: '', // Hide character counter
-          ),
-          enabled: cardModel.enableReadOnly != true,
-          focusNode: cardModel.focusNode,
-          onChanged: (value) {
-            final cardType = _detectCardType(value.replaceAll(' ', ''));
-
-            // Update card info with new number and detected type
-            final updatedCard = HZFBankCardInfo(
-              number: value,
-              expiryMonth: cardModel.value?.expiryMonth,
-              expiryYear: cardModel.value?.expiryYear,
-              cvv: cardModel.value?.cvv,
-              cardHolderName: cardModel.value?.cardHolderName,
-              cardType: cardType,
-            );
-
-            controller.updateFieldValue(cardModel.tag, updatedCard);
-
-            // Move to expiry field when card number is complete
-            if (value.replaceAll(' ', '').length == 16 &&
-                cardModel.expiryFocus != null) {
-              FocusScope.of(context).requestFocus(cardModel.expiryFocus);
-            }
-          },
-        ),
-
-        const SizedBox(height: 12),
-
-        // Row for expiry and CVV
-        Row(
-          children: [
-            // Expiry date field
-            Expanded(
-              flex: 1,
-              child: TextFormField(
-                initialValue: _formatExpiry(
-                    cardModel.value?.expiryMonth, cardModel.value?.expiryYear),
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  _ExpiryDateFormatter(),
-                ],
-                maxLength: 5, // MM/YY
-                decoration: InputDecoration(
-                  hintText: cardModel.expiryHint ?? 'MM/YY',
-                  prefixIcon: const Icon(Icons.date_range),
-                  border: const OutlineInputBorder(),
-                  counterText: '',
-                ),
-                enabled: cardModel.enableReadOnly != true,
-                focusNode: cardModel.expiryFocus,
-                onChanged: (value) {
-                  // Parse MM/YY format
-                  final parts = value.split('/');
-                  String? month, year;
-
-                  if (parts.isNotEmpty) month = parts[0];
-                  if (parts.length > 1) year = parts[1];
-
-                  // Update card info with new expiry
-                  final updatedCard = HZFBankCardInfo(
-                    number: cardModel.value?.number,
-                    expiryMonth: month,
-                    expiryYear: year,
-                    cvv: cardModel.value?.cvv,
-                    cardHolderName: cardModel.value?.cardHolderName,
-                    cardType: cardModel.value?.cardType,
-                  );
-
-                  controller.updateFieldValue(cardModel.tag, updatedCard);
-
-                  // Move to CVV when expiry is complete
-                  if (value.length == 5 && cardModel.cvvFocus != null) {
-                    FocusScope.of(context).requestFocus(cardModel.cvvFocus);
-                  }
-                },
-              ),
-            ),
-
-            const SizedBox(width: 12),
-
-            // CVV field
-            Expanded(
-              flex: 1,
-              child: TextFormField(
-                initialValue: cardModel.value?.cvv,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(
-                      cardModel.value?.cardType == HZFCardType.amex ? 4 : 3),
-                ],
-                maxLength:
-                    cardModel.value?.cardType == HZFCardType.amex ? 4 : 3,
-                decoration: InputDecoration(
-                  hintText: cardModel.cvvHint ?? 'CVV',
-                  prefixIcon: const Icon(Icons.security),
-                  border: const OutlineInputBorder(),
-                  counterText: '',
-                ),
-                obscureText: !cardModel.showCvv,
-                enabled: cardModel.enableReadOnly != true,
-                focusNode: cardModel.cvvFocus,
-                onChanged: (value) {
-                  // Update card info with new CVV
-                  final updatedCard = HZFBankCardInfo(
-                    number: cardModel.value?.number,
-                    expiryMonth: cardModel.value?.expiryMonth,
-                    expiryYear: cardModel.value?.expiryYear,
-                    cvv: value,
-                    cardHolderName: cardModel.value?.cardHolderName,
-                    cardType: cardModel.value?.cardType,
-                  );
-
-                  controller.updateFieldValue(cardModel.tag, updatedCard);
-
-                  // Move to cardholder name when CVV is complete
-                  final isCvvComplete =
-                      cardModel.value?.cardType == HZFCardType.amex
-                          ? value.length == 4
-                          : value.length == 3;
-
-                  if (isCvvComplete && cardModel.nameFocus != null) {
-                    FocusScope.of(context).requestFocus(cardModel.nameFocus);
-                  }
-                },
-              ),
-            ),
-          ],
-        ),
-
-        if (cardModel.showCardholderName) ...[
-          const SizedBox(height: 12),
-
-          // Cardholder name field
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Card number field with formatting
           TextFormField(
-            initialValue: cardModel.value?.cardHolderName,
-            textCapitalization: TextCapitalization.characters,
+            initialValue: cardModel.value?.number,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              _CreditCardFormatter(),
+            ],
+            maxLength: 19, // 16 digits + 3 spaces
             decoration: InputDecoration(
-              hintText: cardModel.nameHint ?? 'CARDHOLDER NAME',
-              prefixIcon: const Icon(Icons.person),
+              hintText: cardModel.hint ?? 'Card number',
+              prefixIcon:
+                  cardModel.prefixWidget ?? const Icon(Icons.credit_card),
+              suffixIcon: _buildCardTypeIcon(cardModel.detectedCardType),
               border: const OutlineInputBorder(),
+              counterText: '', // Hide character counter
             ),
-            style: const TextStyle(letterSpacing: 1.2),
             enabled: cardModel.enableReadOnly != true,
-            focusNode: cardModel.nameFocus,
+            focusNode: cardModel.focusNode,
             onChanged: (value) {
-              // Update card info with new name
+              final cardType = _detectCardType(value.replaceAll(' ', ''));
+
+              // Update card info with new number and detected type
               final updatedCard = HZFBankCardInfo(
-                number: cardModel.value?.number,
+                number: value,
                 expiryMonth: cardModel.value?.expiryMonth,
                 expiryYear: cardModel.value?.expiryYear,
                 cvv: cardModel.value?.cvv,
-                cardHolderName: value,
-                cardType: cardModel.value?.cardType,
+                cardHolderName: cardModel.value?.cardHolderName,
+                cardType: cardType,
               );
 
               controller.updateFieldValue(cardModel.tag, updatedCard);
+
+              // Move to expiry field when card number is complete
+              if (value.replaceAll(' ', '').length == 16 &&
+                  cardModel.expiryFocus != null) {
+                FocusScope.of(context).requestFocus(cardModel.expiryFocus);
+              }
             },
           ),
+
+          const SizedBox(height: 12),
+
+          // Row for expiry and CVV
+          Row(
+            children: [
+              // Expiry date field
+              Expanded(
+                flex: 1,
+                child: TextFormField(
+                  initialValue: _formatExpiry(cardModel.value?.expiryMonth,
+                      cardModel.value?.expiryYear),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    _ExpiryDateFormatter(),
+                  ],
+                  maxLength: 5, // MM/YY
+                  decoration: InputDecoration(
+                    hintText: cardModel.expiryHint ?? 'MM/YY',
+                    prefixIcon: const Icon(Icons.date_range),
+                    border: const OutlineInputBorder(),
+                    counterText: '',
+                  ),
+                  enabled: cardModel.enableReadOnly != true,
+                  focusNode: cardModel.expiryFocus,
+                  onChanged: (value) {
+                    // Parse MM/YY format
+                    final parts = value.split('/');
+                    String? month, year;
+
+                    if (parts.isNotEmpty) month = parts[0];
+                    if (parts.length > 1) year = parts[1];
+
+                    // Update card info with new expiry
+                    final updatedCard = HZFBankCardInfo(
+                      number: cardModel.value?.number,
+                      expiryMonth: month,
+                      expiryYear: year,
+                      cvv: cardModel.value?.cvv,
+                      cardHolderName: cardModel.value?.cardHolderName,
+                      cardType: cardModel.value?.cardType,
+                    );
+
+                    controller.updateFieldValue(cardModel.tag, updatedCard);
+
+                    // Move to CVV when expiry is complete
+                    if (value.length == 5 && cardModel.cvvFocus != null) {
+                      FocusScope.of(context).requestFocus(cardModel.cvvFocus);
+                    }
+                  },
+                ),
+              ),
+
+              const SizedBox(width: 12),
+
+              // CVV field
+              Expanded(
+                flex: 1,
+                child: TextFormField(
+                  initialValue: cardModel.value?.cvv,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(
+                        cardModel.value?.cardType == HZFCardType.amex ? 4 : 3),
+                  ],
+                  maxLength:
+                      cardModel.value?.cardType == HZFCardType.amex ? 4 : 3,
+                  decoration: InputDecoration(
+                    hintText: cardModel.cvvHint ?? 'CVV',
+                    prefixIcon: const Icon(Icons.security),
+                    border: const OutlineInputBorder(),
+                    counterText: '',
+                  ),
+                  obscureText: !cardModel.showCvv,
+                  enabled: cardModel.enableReadOnly != true,
+                  focusNode: cardModel.cvvFocus,
+                  onChanged: (value) {
+                    // Update card info with new CVV
+                    final updatedCard = HZFBankCardInfo(
+                      number: cardModel.value?.number,
+                      expiryMonth: cardModel.value?.expiryMonth,
+                      expiryYear: cardModel.value?.expiryYear,
+                      cvv: value,
+                      cardHolderName: cardModel.value?.cardHolderName,
+                      cardType: cardModel.value?.cardType,
+                    );
+
+                    controller.updateFieldValue(cardModel.tag, updatedCard);
+
+                    // Move to cardholder name when CVV is complete
+                    final isCvvComplete =
+                        cardModel.value?.cardType == HZFCardType.amex
+                            ? value.length == 4
+                            : value.length == 3;
+
+                    if (isCvvComplete && cardModel.nameFocus != null) {
+                      FocusScope.of(context).requestFocus(cardModel.nameFocus);
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+
+          if (cardModel.showCardholderName) ...[
+            const SizedBox(height: 12),
+
+            // Cardholder name field
+            TextFormField(
+              initialValue: cardModel.value?.cardHolderName,
+              textCapitalization: TextCapitalization.characters,
+              decoration: InputDecoration(
+                hintText: cardModel.nameHint ?? 'CARDHOLDER NAME',
+                prefixIcon: const Icon(Icons.person),
+                border: const OutlineInputBorder(),
+              ),
+              style: const TextStyle(letterSpacing: 1.2),
+              enabled: cardModel.enableReadOnly != true,
+              focusNode: cardModel.nameFocus,
+              onChanged: (value) {
+                // Update card info with new name
+                final updatedCard = HZFBankCardInfo(
+                  number: cardModel.value?.number,
+                  expiryMonth: cardModel.value?.expiryMonth,
+                  expiryYear: cardModel.value?.expiryYear,
+                  cvv: cardModel.value?.cvv,
+                  cardHolderName: value,
+                  cardType: cardModel.value?.cardType,
+                );
+
+                controller.updateFieldValue(cardModel.tag, updatedCard);
+              },
+            ),
+          ],
         ],
-      ],
+      ),
     );
   }
 

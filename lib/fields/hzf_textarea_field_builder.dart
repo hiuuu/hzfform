@@ -15,29 +15,32 @@ class TextAreaFieldBuilder implements FieldBuilder {
   ) {
     final textModel = model as HZFFormTextPlainModel;
 
-    return TextFormField(
-      initialValue: textModel.value?.toString(),
-      decoration: InputDecoration(
-        hintText: textModel.hint,
-        prefixIcon: textModel.prefixWidget,
-        suffixIcon: textModel.postfixWidget,
-        border: const OutlineInputBorder(),
-        errorStyle: const TextStyle(height: 0),
-        counterText: textModel.showCounter == true ? null : '',
+    return Material(
+      type: MaterialType.transparency,
+      child: TextFormField(
+        initialValue: textModel.value?.toString(),
+        decoration: InputDecoration(
+          hintText: textModel.hint,
+          prefixIcon: textModel.prefixWidget,
+          suffixIcon: textModel.postfixWidget,
+          border: const OutlineInputBorder(),
+          errorStyle: const TextStyle(height: 0),
+          counterText: textModel.showCounter == true ? null : '',
+        ),
+        maxLines: textModel.maxLine,
+        minLines: textModel.minLine,
+        maxLength: textModel.maxLength,
+        enabled: textModel.enableReadOnly != true,
+        focusNode: textModel.focusNode,
+        onChanged: (value) {
+          controller.updateFieldValue(textModel.tag, value);
+        },
+        onFieldSubmitted: (_) {
+          if (textModel.nextFocusNode != null) {
+            FocusScope.of(context).requestFocus(textModel.nextFocusNode);
+          }
+        },
       ),
-      maxLines: textModel.maxLine,
-      minLines: textModel.minLine,
-      maxLength: textModel.maxLength,
-      enabled: textModel.enableReadOnly != true,
-      focusNode: textModel.focusNode,
-      onChanged: (value) {
-        controller.updateFieldValue(textModel.tag, value);
-      },
-      onFieldSubmitted: (_) {
-        if (textModel.nextFocusNode != null) {
-          FocusScope.of(context).requestFocus(textModel.nextFocusNode);
-        }
-      },
     );
   }
 }

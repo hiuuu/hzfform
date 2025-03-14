@@ -22,30 +22,33 @@ class DocumentPickerFieldBuilder implements FieldBuilder {
     final docModel = model as HZFFormDocumentPickerModel;
     final hasDocument = docModel.value != null;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Document preview card
-        if (hasDocument) _buildDocumentPreview(docModel, controller, context),
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Document preview card
+          if (hasDocument) _buildDocumentPreview(docModel, controller, context),
 
-        // Button row (Pick/Scan)
-        if (!hasDocument || docModel.allowMultiple)
-          _buildActionButtons(docModel, controller, context),
+          // Button row (Pick/Scan)
+          if (!hasDocument || docModel.allowMultiple)
+            _buildActionButtons(docModel, controller, context),
 
-        // Helper text
-        if (docModel.helperText != null && !hasDocument)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              docModel.helperText!,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 12,
-                fontStyle: FontStyle.italic,
+          // Helper text
+          if (docModel.helperText != null && !hasDocument)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                docModel.helperText!,
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 

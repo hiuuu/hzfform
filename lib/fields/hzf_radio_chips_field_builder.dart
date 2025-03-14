@@ -14,16 +14,19 @@ class RadioChipsGroupBuilder implements FieldBuilder {
   ) {
     final radioModel = model as HZFFormRadioChipsGroupModel;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Chips layout
-        Wrap(
-          spacing: 8.0,
-          runSpacing: 8.0,
-          children: _buildChips(radioModel, controller, context),
-        ),
-      ],
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Chips layout
+          Wrap(
+            spacing: 8.0,
+            runSpacing: 8.0,
+            children: _buildChips(radioModel, controller, context),
+          ),
+        ],
+      ),
     );
   }
 

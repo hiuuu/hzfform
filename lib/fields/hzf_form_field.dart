@@ -38,22 +38,25 @@ class _HZFFormFieldState extends State<HZFFormField> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, _) {
-        return Padding(
-          padding: widget.padding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildFieldTitle(context),
-              _buildFieldByType(),
-              _buildErrorMessage(),
-              _buildHelpMessage(),
-            ],
-          ),
-        );
-      },
+    return Material(
+      type: MaterialType.transparency,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, _) {
+          return Padding(
+            padding: widget.padding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildFieldTitle(context),
+                _buildFieldByType(),
+                _buildErrorMessage(),
+                _buildHelpMessage(),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 

@@ -20,30 +20,33 @@ class VideoPickerFieldBuilder implements FieldBuilder {
     final videoModel = model as HZFFormVideoPickerModel;
     final hasVideo = videoModel.value != null;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Video preview
-        if (hasVideo) _buildVideoPreview(videoModel, controller),
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Video preview
+          if (hasVideo) _buildVideoPreview(videoModel, controller),
 
-        // Action buttons
-        if (!hasVideo || videoModel.showActionButtonsAlways)
-          _buildActionButtons(videoModel, controller, context),
+          // Action buttons
+          if (!hasVideo || videoModel.showActionButtonsAlways)
+            _buildActionButtons(videoModel, controller, context),
 
-        // Helper text
-        if (videoModel.helperText != null && !hasVideo)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              videoModel.helperText!,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 12,
-                fontStyle: FontStyle.italic,
+          // Helper text
+          if (videoModel.helperText != null && !hasVideo)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                videoModel.helperText!,
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 

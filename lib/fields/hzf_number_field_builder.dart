@@ -16,39 +16,42 @@ class NumberFieldBuilder implements FieldBuilder {
   ) {
     final numberModel = model as HZFFormNumberModel;
 
-    return TextFormField(
-      initialValue: _formatValueForDisplay(numberModel.value, numberModel),
-      keyboardType: TextInputType.numberWithOptions(
-        decimal: numberModel.allowDecimal ?? true,
-        signed: numberModel.allowNegative ?? false,
-      ),
-      inputFormatters: _buildInputFormatters(numberModel),
-      decoration: InputDecoration(
-        hintText: numberModel.hint,
-        prefixIcon: numberModel.prefixWidget,
-        suffixIcon: numberModel.postfixWidget,
-        border: const OutlineInputBorder(),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-        errorStyle: const TextStyle(height: 0),
-      ),
-      enabled: numberModel.enableReadOnly != true,
-      focusNode: numberModel.focusNode,
-      onChanged: (value) {
-        // Parse from display format to actual value
-        if (value.isEmpty) {
-          controller.updateFieldValue(numberModel.tag, null);
-          return;
-        }
+    return Material(
+      type: MaterialType.transparency,
+      child: TextFormField(
+        initialValue: _formatValueForDisplay(numberModel.value, numberModel),
+        keyboardType: TextInputType.numberWithOptions(
+          decimal: numberModel.allowDecimal ?? true,
+          signed: numberModel.allowNegative ?? false,
+        ),
+        inputFormatters: _buildInputFormatters(numberModel),
+        decoration: InputDecoration(
+          hintText: numberModel.hint,
+          prefixIcon: numberModel.prefixWidget,
+          suffixIcon: numberModel.postfixWidget,
+          border: const OutlineInputBorder(),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+          errorStyle: const TextStyle(height: 0),
+        ),
+        enabled: numberModel.enableReadOnly != true,
+        focusNode: numberModel.focusNode,
+        onChanged: (value) {
+          // Parse from display format to actual value
+          if (value.isEmpty) {
+            controller.updateFieldValue(numberModel.tag, null);
+            return;
+          }
 
-        _updateNumericValue(
-            _parseDisplayValue(value, numberModel), numberModel, controller);
-      },
-      onFieldSubmitted: (_) {
-        if (numberModel.nextFocusNode != null) {
-          FocusScope.of(context).requestFocus(numberModel.nextFocusNode);
-        }
-      },
+          _updateNumericValue(
+              _parseDisplayValue(value, numberModel), numberModel, controller);
+        },
+        onFieldSubmitted: (_) {
+          if (numberModel.nextFocusNode != null) {
+            FocusScope.of(context).requestFocus(numberModel.nextFocusNode);
+          }
+        },
+      ),
     );
   }
 

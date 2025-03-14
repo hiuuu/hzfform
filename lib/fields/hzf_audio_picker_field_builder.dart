@@ -27,30 +27,33 @@ class AudioPickerFieldBuilder implements FieldBuilder {
     final audioModel = model as HZFFormAudioPickerModel;
     final hasAudio = audioModel.value != null;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Audio player/preview
-        if (hasAudio) _buildAudioPreview(audioModel, controller, context),
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Audio player/preview
+          if (hasAudio) _buildAudioPreview(audioModel, controller, context),
 
-        // Action buttons
-        if (!hasAudio || audioModel.showActionButtonsAlways)
-          _buildActionButtons(audioModel, controller, context),
+          // Action buttons
+          if (!hasAudio || audioModel.showActionButtonsAlways)
+            _buildActionButtons(audioModel, controller, context),
 
-        // Helper text
-        if (audioModel.helperText != null && !hasAudio)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              audioModel.helperText!,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 12,
-                fontStyle: FontStyle.italic,
+          // Helper text
+          if (audioModel.helperText != null && !hasAudio)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                audioModel.helperText!,
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 

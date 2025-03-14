@@ -15,16 +15,19 @@ class RadioGroupFieldBuilder implements FieldBuilder {
     final radioModel = model as HZFFormRadioGroupModel;
     final theme = Theme.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Radio group items
-        ...radioModel.items.map(
-            (item) => _buildRadioTile(item, radioModel, controller, theme)),
+    return Material(
+      type: MaterialType.transparency,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Radio group items
+          ...radioModel.items.map(
+              (item) => _buildRadioTile(item, radioModel, controller, theme)),
 
-        // Validation/error space
-        const SizedBox(height: 4),
-      ],
+          // Validation/error space
+          const SizedBox(height: 4),
+        ],
+      ),
     );
   }
 

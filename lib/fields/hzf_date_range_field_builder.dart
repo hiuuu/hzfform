@@ -17,23 +17,26 @@ class DateRangePickerBuilder implements FieldBuilder {
   ) {
     final rangeModel = model as HZFFormDateRangePickerModel;
 
-    return InkWell(
-      onTap: rangeModel.enableReadOnly == true
-          ? null
-          : () => _showRangePicker(
-                context,
-                rangeModel,
-                controller,
-              ),
-      child: InputDecorator(
-        decoration: InputDecoration(
-          hintText: rangeModel.hint ?? 'Select date range',
-          prefixIcon: rangeModel.prefixWidget ?? const Icon(Icons.date_range),
-          suffixIcon:
-              rangeModel.postfixWidget ?? const Icon(Icons.arrow_drop_down),
-          border: const OutlineInputBorder(),
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: rangeModel.enableReadOnly == true
+            ? null
+            : () => _showRangePicker(
+                  context,
+                  rangeModel,
+                  controller,
+                ),
+        child: InputDecorator(
+          decoration: InputDecoration(
+            hintText: rangeModel.hint ?? 'Select date range',
+            prefixIcon: rangeModel.prefixWidget ?? const Icon(Icons.date_range),
+            suffixIcon:
+                rangeModel.postfixWidget ?? const Icon(Icons.arrow_drop_down),
+            border: const OutlineInputBorder(),
+          ),
+          child: _buildRangeDisplay(context, rangeModel),
         ),
-        child: _buildRangeDisplay(context, rangeModel),
       ),
     );
   }
