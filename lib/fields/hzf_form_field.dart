@@ -156,7 +156,7 @@ class HZFFormFieldFactory {
         return CheckboxChipsListBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.checkList:
-        return CheckListBuilder().build(model, controller, context);
+        return CheckListFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.checkbox:
         return CheckboxFieldBuilder().build(model, controller, context);
@@ -177,7 +177,7 @@ class HZFFormFieldFactory {
         return SliderFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.sliderRange:
-        return SliderRangeBuilder().build(model, controller, context);
+        return SliderRangeFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.bankCard:
         return BankCardFieldBuilder().build(model, controller, context);

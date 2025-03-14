@@ -5,7 +5,7 @@ import '../models/field_model.dart';
 import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
-class CheckListBuilder implements FieldBuilder {
+class CheckListFieldBuilder implements FieldBuilder {
   @override
   Widget build(
     HZFFormFieldModel model,

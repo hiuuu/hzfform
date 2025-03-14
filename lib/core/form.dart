@@ -150,6 +150,26 @@ class HZFForm extends StatefulWidget {
           () => DateRangePickerBuilder();
       _fieldBuilders[HZFFormFieldTypeEnum.timePicker] =
           () => TimePickerFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.bankCard] =
+          () => BankCardFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.checkChips] =
+          () => CheckboxChipsListBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.checkList] =
+          () => CheckListFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.dateRangePicker] =
+          () => DateRangePickerBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.number] = () => NumberFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.radioChips] =
+          () => RadioChipsGroupBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.radioGroup] =
+          () => RadioGroupFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.slider] = () => SliderFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.sliderRange] =
+          () => SliderRangeFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.spinner] =
+          () => SpinnerFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.textPlain] =
+          () => TextAreaFieldBuilder();
     }
   }
 }

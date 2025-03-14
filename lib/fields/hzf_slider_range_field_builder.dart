@@ -7,7 +7,7 @@ import '../models/slider_range_model.dart';
 import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
-class SliderRangeBuilder implements FieldBuilder {
+class SliderRangeFieldBuilder implements FieldBuilder {
   @override
   Widget build(
     HZFFormFieldModel model,
