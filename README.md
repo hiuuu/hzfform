@@ -86,8 +86,6 @@ HZFForm(
 
 # HZFForm - Flutter Dynamic Form Builder
 
-# HZFForm - Flutter Dynamic Form Builder
-
 ## Installation
 
 ```yaml
