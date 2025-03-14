@@ -1,34 +1,51 @@
 // ignore_for_file: use_super_parameters
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'field_model.dart';
 import '../core/enums.dart';
 
 class HZFFormBankCardModel extends HZFFormFieldModel {
-  /// Hint text to display when field is empty
+  /// Card number hint
   final String? hint;
 
-  /// Card number formatting pattern
-  final String? cardNumberPattern;
+  /// Expiry date hint
+  final String? expiryHint;
 
-  /// Maximum card number length
-  final int maxLength;
+  /// CVV hint
+  final String? cvvHint;
 
-  /// Card type detection callback
-  final Function(String)? onCardTypeDetected;
+  /// Cardholder name hint
+  final String? nameHint;
 
-  /// Whether to show card type icon
-  final bool showCardTypeIcon;
+  /// Show cardholder name field
+  final bool showCardholderName;
+
+  /// Show CVV instead of masking
+  final bool showCvv;
+
+  /// Focus nodes for fields
+  final FocusNode? expiryFocus;
+  final FocusNode? cvvFocus;
+  final FocusNode? nameFocus;
+
+  /// Detected card type (read-only)
+  HZFCardType? get detectedCardType => value?.cardType;
 
   HZFFormBankCardModel({
     required String tag,
     this.hint,
-    this.cardNumberPattern = 'xxxx xxxx xxxx xxxx',
-    this.maxLength = 19, // 16 digits + 3 spaces
-    this.onCardTypeDetected,
-    this.showCardTypeIcon = true,
+    this.expiryHint,
+    this.cvvHint,
+    this.nameHint,
+    this.showCardholderName = true,
+    this.showCvv = false,
+    this.expiryFocus,
+    this.cvvFocus,
+    this.nameFocus,
 
-    // Parent class properties - passed through to super
+    // Parent props
     String? title,
     String? errorMessage,
     String? helpMessage,
@@ -36,7 +53,7 @@ class HZFFormBankCardModel extends HZFFormFieldModel {
     Widget? postfixWidget,
     bool? required,
     bool? showTitle,
-    dynamic value,
+    HZFBankCardInfo? value,
     RegExp? validateRegEx,
     int? weight,
     FocusNode? focusNode,
@@ -55,7 +72,7 @@ class HZFFormBankCardModel extends HZFFormFieldModel {
           required: required,
           showTitle: showTitle,
           value: value,
-          validateRegEx: validateRegEx ?? RegExp(r'^[0-9]{16,19}$'),
+          validateRegEx: validateRegEx,
           weight: weight,
           focusNode: focusNode,
           nextFocusNode: nextFocusNode,
@@ -64,3 +81,63 @@ class HZFFormBankCardModel extends HZFFormFieldModel {
           enableReadOnly: enableReadOnly,
         );
 }
+
+class HZFBankCardInfo {
+  final String? number;
+  final String? expiryMonth;
+  final String? expiryYear;
+  final String? cvv;
+  final String? cardHolderName;
+  final HZFCardType? cardType;
+
+  HZFBankCardInfo({
+    this.number,
+    this.expiryMonth,
+    this.expiryYear,
+    this.cvv,
+    this.cardHolderName,
+    this.cardType,
+  });
+
+  bool get isValid {
+    final hasValidNumber =
+        number != null && number!.replaceAll(' ', '').length >= 16;
+    final hasValidExpiry = expiryMonth != null &&
+        expiryYear != null &&
+        expiryMonth!.length == 2 &&
+        expiryYear!.length == 2;
+    final hasValidCvv = cvv != null &&
+        (cardType == HZFCardType.amex ? cvv!.length == 4 : cvv!.length == 3);
+
+    return hasValidNumber && hasValidExpiry && hasValidCvv;
+  }
+
+  String? get formattedExpiry {
+    if (expiryMonth == null || expiryYear == null) return null;
+    return '$expiryMonth/$expiryYear';
+  }
+
+  @override
+  String toString() =>
+      'HZFBankCardInfo(number: ${number != null ? "${number!.substring(0, min(4, number!.length))}..." : "null"}, '
+      'expiry: $formattedExpiry, '
+      'cvv: ${cvv != null ? "***" : "null"}, '
+      'name: $cardHolderName, '
+      'type: $cardType)';
+}
+
+/*
+USAGE:
+
+final cardField = HZFFormBankCardModel(
+  tag: 'paymentCard',
+  title: 'Payment Method',
+  hint: 'Card number',
+  expiryHint: 'MM/YY',
+  cvvHint: 'CVV',
+  nameHint: 'NAME ON CARD',
+  required: true,
+  showCardholderName: true,
+);
+
+*/

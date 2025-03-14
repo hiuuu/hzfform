@@ -5,20 +5,28 @@ import 'field_model.dart';
 import '../core/enums.dart';
 
 class HZFFormSpinnerModel extends HZFFormFieldModel {
-  /// Available dropdown items
-  final List<SpinnerDataModel> items;
+  /// Available items
+  final List<HZFFormSpinnerItem> items;
 
-  /// Placeholder text when no selection
+  /// Hint text
   final String? hint;
 
-  /// Selection change callback
-  final ValueChanged<SpinnerDataModel?>? onChange;
+  /// Dropdown icon
+  final Widget? dropdownIcon;
+
+  /// Dropdown background color
+  final Color? dropdownColor;
+
+  /// Maximum dropdown menu height
+  final double? menuMaxHeight;
 
   HZFFormSpinnerModel({
     required String tag,
     required this.items,
     this.hint,
-    this.onChange,
+    this.dropdownIcon,
+    this.dropdownColor,
+    this.menuMaxHeight,
 
     // Parent props
     String? title,
@@ -28,7 +36,7 @@ class HZFFormSpinnerModel extends HZFFormFieldModel {
     Widget? postfixWidget,
     bool? required,
     bool? showTitle,
-    dynamic value,
+    String? value,
     RegExp? validateRegEx,
     int? weight,
     FocusNode? focusNode,
@@ -43,7 +51,7 @@ class HZFFormSpinnerModel extends HZFFormFieldModel {
           errorMessage: errorMessage,
           helpMessage: helpMessage,
           prefixWidget: prefixWidget,
-          postfixWidget: postfixWidget ?? const Icon(Icons.arrow_drop_down),
+          postfixWidget: postfixWidget,
           required: required,
           showTitle: showTitle,
           value: value,
@@ -57,13 +65,43 @@ class HZFFormSpinnerModel extends HZFFormFieldModel {
         );
 }
 
-class SpinnerDataModel {
-  String name;
-  int id;
-  bool? isSelected;
-  dynamic data;
+/// Item for spinner field
+class HZFFormSpinnerItem {
+  /// Unique identifier
+  final String id;
 
-  SpinnerDataModel(
-      {required this.name, required this.id, this.data, bool? isSelected})
-      : isSelected = isSelected ?? false;
+  /// Display text
+  final String label;
+
+  /// Optional icon
+  final IconData? icon;
+
+  /// Whether item is disabled
+  final bool disabled;
+
+  const HZFFormSpinnerItem({
+    required this.id,
+    required this.label,
+    this.icon,
+    this.disabled = false,
+  });
 }
+
+
+/*
+USAGE:
+
+final countryField = HZFFormSpinnerModel(
+  tag: 'country',
+  title: 'Country',
+  hint: 'Select a country',
+  required: true,
+  items: [
+    HZFFormSpinnerItem(id: 'us', label: 'United States', icon: Icons.flag),
+    HZFFormSpinnerItem(id: 'ca', label: 'Canada', icon: Icons.flag),
+    HZFFormSpinnerItem(id: 'mx', label: 'Mexico', icon: Icons.flag),
+    HZFFormSpinnerItem(id: 'other', label: 'Other (unavailable)', disabled: true),
+  ],
+);
+
+*/

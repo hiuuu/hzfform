@@ -2,56 +2,59 @@
 
 import 'package:flutter/material.dart';
 import 'field_model.dart';
-import 'radio_chips_group_model.dart';
 import '../core/enums.dart';
 
 class HZFFormCheckChipsListModel extends HZFFormFieldModel {
-  /// Available chip options
-  final List<HZFFormCheckChipsDataModel> items;
+  /// Available options
+  final List<HZFFormCheckChipDataModel> items;
 
-  /// Multiple selection change callback
-  final ValueChanged<List<HZFFormCheckChipsDataModel>>? onSelectionChanged;
+  /// Background color for unselected chips
+  final Color? backgroundColor;
 
-  /// Chip layout direction
-  final Axis direction;
+  /// Color for selected chips
+  final Color? selectedColor;
 
-  /// Spacing between chips
-  final double spacing;
+  /// Text color
+  final Color? textColor;
 
-  /// Run spacing for wrapped chips
-  final double runSpacing;
+  /// Selected text color
+  final Color? selectedTextColor;
 
-  /// Allow wrapping to multiple lines
-  final bool wrap;
+  /// Checkmark color
+  final Color? checkmarkColor;
 
-  /// Chip style customization
-  final HZFChipStyle? chipStyle;
+  /// Show checkmark on selected chips
+  final bool? showCheckmark;
 
-  /// Scrollable container
-  final bool scrollable;
+  /// Max number of selectable items
+  final int? maxSelection;
 
-  /// Maximum height when scrollable
-  final double? maxHeight;
+  /// Message when max selection reached
+  final String? maxSelectionMessage;
 
-  /// Minimum selections required
-  final int? minSelections;
+  /// Show count of selected items
+  final bool? showSelectedCount;
 
-  /// Maximum selections allowed
-  final int? maxSelections;
+  /// Show search filter
+  final bool? showSearchFilter;
+
+  /// Search hint text
+  final String? searchHint;
 
   HZFFormCheckChipsListModel({
     required String tag,
     required this.items,
-    this.onSelectionChanged,
-    this.direction = Axis.horizontal,
-    this.spacing = 8.0,
-    this.runSpacing = 8.0,
-    this.wrap = true,
-    this.chipStyle,
-    this.scrollable = false,
-    this.maxHeight,
-    this.minSelections,
-    this.maxSelections,
+    this.backgroundColor,
+    this.selectedColor,
+    this.textColor,
+    this.selectedTextColor,
+    this.checkmarkColor,
+    this.showCheckmark,
+    this.maxSelection,
+    this.maxSelectionMessage,
+    this.showSelectedCount = true,
+    this.showSearchFilter = false,
+    this.searchHint,
 
     // Parent props
     String? title,
@@ -61,7 +64,7 @@ class HZFFormCheckChipsListModel extends HZFFormFieldModel {
     Widget? postfixWidget,
     bool? required,
     bool? showTitle,
-    dynamic value,
+    dynamic value, // List<String> (item ids)
     RegExp? validateRegEx,
     int? weight,
     FocusNode? focusNode,
@@ -73,14 +76,13 @@ class HZFFormCheckChipsListModel extends HZFFormFieldModel {
           tag: tag,
           type: HZFFormFieldTypeEnum.checkChips,
           title: title,
-          errorMessage: errorMessage ??
-              (minSelections != null ? "Select at least $minSelections" : null),
+          errorMessage: errorMessage,
           helpMessage: helpMessage,
           prefixWidget: prefixWidget,
           postfixWidget: postfixWidget,
-          required: required ?? (minSelections != null && minSelections > 0),
+          required: required,
           showTitle: showTitle,
-          value: value,
+          value: value ?? <String>[],
           validateRegEx: validateRegEx,
           weight: weight,
           focusNode: focusNode,
@@ -89,21 +91,10 @@ class HZFFormCheckChipsListModel extends HZFFormFieldModel {
           status: status,
           enableReadOnly: enableReadOnly,
         );
-
-  /// Get currently selected items
-  List<HZFFormCheckChipsDataModel> get selectedItems =>
-      items.where((item) => item.isSelected).toList();
-
-  /// Check if selection limits are satisfied
-  bool isSelectionValid() {
-    final selectedCount = selectedItems.length;
-    return (minSelections == null || selectedCount >= minSelections!) &&
-        (maxSelections == null || selectedCount <= maxSelections!);
-  }
 }
 
-/// Data model for individual check chip items
-class HZFFormCheckChipsDataModel {
+/// Data model for check chip item
+class HZFFormCheckChipDataModel {
   /// Unique identifier
   final String id;
 
@@ -111,50 +102,29 @@ class HZFFormCheckChipsDataModel {
   final String label;
 
   /// Optional icon
-  final Widget? icon;
+  final IconData? icon;
 
-  /// Whether chip is selected
-  final bool isSelected;
-
-  /// Whether chip is enabled
-  final bool isEnabled;
-
-  /// Custom tooltip text
-  final String? tooltip;
-
-  /// Additional custom data
-  final dynamic data;
-
-  /// Background color when selected
-  final Color? selectedColor;
-
-  /// Text color when selected
-  final Color? selectedTextColor;
-
-  const HZFFormCheckChipsDataModel({
+  const HZFFormCheckChipDataModel({
     required this.id,
     required this.label,
     this.icon,
-    this.isSelected = false,
-    this.isEnabled = true,
-    this.tooltip,
-    this.data,
-    this.selectedColor,
-    this.selectedTextColor,
   });
-
-  /// Create copy with modified selection state
-  HZFFormCheckChipsDataModel copyWithSelection(bool selected) {
-    return HZFFormCheckChipsDataModel(
-      id: id,
-      label: label,
-      icon: icon,
-      isSelected: selected,
-      isEnabled: isEnabled,
-      tooltip: tooltip,
-      data: data,
-      selectedColor: selectedColor,
-      selectedTextColor: selectedTextColor,
-    );
-  }
 }
+
+
+/*
+USAGE
+
+HZFFormCheckChipsListModel(
+  tag: 'interests',
+  title: 'Select Your Interests',
+  items: [
+    HZFFormCheckChipDataModel(id: 'tech', label: 'Technology', icon: Icons.computer),
+    HZFFormCheckChipDataModel(id: 'sports', label: 'Sports', icon: Icons.sports_soccer),
+    HZFFormCheckChipDataModel(id: 'food', label: 'Cooking', icon: Icons.restaurant),
+  ],
+  maxSelection: 2,
+  maxSelectionMessage: 'You can select up to 2 interests',
+  showSearchFilter: true,
+)
+*/

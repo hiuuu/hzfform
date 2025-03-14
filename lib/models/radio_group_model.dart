@@ -1,68 +1,29 @@
 // ignore_for_file: use_super_parameters
 
 import 'package:flutter/material.dart';
-import 'field_model.dart';
+
 import '../core/enums.dart';
+import 'field_model.dart';
 
 class HZFFormRadioGroupModel extends HZFFormFieldModel {
-  /// Radio options to display
-  final List<RadioDataModel> items;
+  /// Available items
+  final List<HZFFormRadioItem> items;
 
-  /// Placeholder text
-  final String? hint;
+  /// Active color for selected radio
+  final Color? activeColor;
 
-  /// Custom icon for selected state
-  final Widget? selectedIcon;
+  /// Compact display mode
+  final bool dense;
 
-  /// Custom icon for unselected state
-  final Widget? unSelectedIcon;
-
-  /// Enable list scrolling
-  final bool? scrollable;
-
-  /// Container height
-  final double? height;
-
-  /// Scroll direction (horizontal/vertical)
-  final Axis? scrollDirection;
-
-  /// Show scrollbar indicator
-  final bool? showScrollBar;
-
-  /// Enable search functionality
-  final bool searchable;
-
-  /// Search field placeholder
-  final String? searchHint;
-
-  /// Custom search icon
-  final Icon? searchIcon;
-
-  /// Search box styling
-  final BoxDecoration? searchBoxDecoration;
-
-  /// Scrollbar color
-  final Color? scrollBarColor;
-
-  /// Selection change callback
-  final ValueChanged<RadioDataModel> callBack;
+  /// Callback when item is selected
+  final Function(String)? onItemSelected;
 
   HZFFormRadioGroupModel({
     required String tag,
     required this.items,
-    required this.callBack,
-    this.hint,
-    this.selectedIcon,
-    this.unSelectedIcon,
-    this.scrollable,
-    this.height,
-    this.scrollDirection = Axis.vertical,
-    this.showScrollBar,
-    this.searchable = false,
-    this.searchHint,
-    this.searchIcon,
-    this.searchBoxDecoration,
-    this.scrollBarColor,
+    this.activeColor,
+    this.dense = false,
+    this.onItemSelected,
 
     // Parent props
     String? title,
@@ -72,7 +33,7 @@ class HZFFormRadioGroupModel extends HZFFormFieldModel {
     Widget? postfixWidget,
     bool? required,
     bool? showTitle,
-    dynamic value,
+    String? value,
     RegExp? validateRegEx,
     int? weight,
     FocusNode? focusNode,
@@ -101,10 +62,28 @@ class HZFFormRadioGroupModel extends HZFFormFieldModel {
         );
 }
 
-class RadioDataModel {
-  String title;
-  bool isSelected;
-  dynamic data;
+/// Item for radio group
+class HZFFormRadioItem {
+  /// Unique identifier
+  final String id;
 
-  RadioDataModel({required this.title, required this.isSelected, this.data});
+  /// Display text
+  final String label;
+
+  /// Optional subtitle
+  final String? subtitle;
+
+  /// Optional icon
+  final IconData? icon;
+
+  /// Whether item is disabled
+  final bool disabled;
+
+  const HZFFormRadioItem({
+    required this.id,
+    required this.label,
+    this.subtitle,
+    this.icon,
+    this.disabled = false,
+  });
 }

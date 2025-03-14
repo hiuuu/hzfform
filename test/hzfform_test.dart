@@ -11,7 +11,7 @@ class MyForm extends StatefulWidget {
 }
 
 class _MyFormState extends State<MyForm> {
-  final _formController = HZFormController();
+  final _formController = HZFFormController();
   final _formKey = GlobalKey<FormState>();
 
   void _submitForm() {
@@ -37,7 +37,7 @@ class _MyFormState extends State<MyForm> {
       appBar: AppBar(title: Text('HZForm Example')),
       body: Padding(
         padding: EdgeInsets.all(16),
-        child: HZForm(
+        child: HZFForm(
           controller: _formController,
           children: [
             HZTextField(

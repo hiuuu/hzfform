@@ -5,66 +5,53 @@ import 'field_model.dart';
 import '../core/enums.dart';
 
 class HZFFormCheckListModel extends HZFFormFieldModel {
-  /// List of checkable items
-  final List<CheckDataModel> items;
+  /// Items to display
+  final List<HZFFormCheckListItem> items;
 
-  /// Placeholder text when empty
-  final String? hint;
+  /// Enable search filtering
+  final bool enableSearch;
 
-  /// Custom icon for selected state
-  final Widget? selectedIcon;
-
-  /// Custom icon for unselected state
-  final Widget? unSelectedIcon;
-
-  /// Enable scrolling for list
-  final bool? scrollable;
-
-  /// Container height
-  final double? height;
-
-  /// Horizontal/vertical scrolling
-  final Axis? scrollDirection;
-
-  /// Show scrollbar indicator
-  final bool? showScrollBar;
-
-  /// Enable search functionality
-  final bool searchable;
-
-  /// Search field placeholder
+  /// Search hint text
   final String? searchHint;
 
-  /// Custom search icon
-  final Icon? searchIcon;
+  /// No results text
+  final String? noResultsText;
 
-  /// Search box styling
-  final BoxDecoration? searchBoxDecoration;
+  /// Show selection counter
+  final bool showCounter;
 
-  /// Scrollbar color
-  final Color? scrollBarColor;
+  /// Enable bulk actions (select all/clear)
+  final bool enableBulkActions;
 
-  /// Validation requirement type
-  final RequiredCheckListEnum? requiredCheckListEnum;
+  /// Select all button text
+  final String? selectAllText;
+
+  /// Clear selection button text
+  final String? clearSelectionText;
+
+  /// Checkbox color
+  final Color? checkColor;
+
+  /// Maximum selectable items
+  final int? maxSelection;
+
+  /// Search controller
+  final TextEditingController searchController = TextEditingController();
 
   HZFFormCheckListModel({
     required String tag,
     required this.items,
-    this.hint,
-    this.selectedIcon,
-    this.unSelectedIcon,
-    this.scrollable,
-    this.height,
-    this.scrollDirection,
-    this.showScrollBar,
-    this.searchable = false,
+    this.enableSearch = false,
     this.searchHint,
-    this.searchIcon,
-    this.searchBoxDecoration,
-    this.scrollBarColor,
-    this.requiredCheckListEnum,
+    this.noResultsText,
+    this.showCounter = true,
+    this.enableBulkActions = true,
+    this.selectAllText,
+    this.clearSelectionText,
+    this.checkColor,
+    this.maxSelection,
 
-    // Parent class properties
+    // Parent props
     String? title,
     String? errorMessage,
     String? helpMessage,
@@ -72,7 +59,7 @@ class HZFFormCheckListModel extends HZFFormFieldModel {
     Widget? postfixWidget,
     bool? required,
     bool? showTitle,
-    dynamic value,
+    dynamic value, // List<String> (item ids)
     RegExp? validateRegEx,
     int? weight,
     FocusNode? focusNode,
@@ -90,7 +77,7 @@ class HZFFormCheckListModel extends HZFFormFieldModel {
           postfixWidget: postfixWidget,
           required: required,
           showTitle: showTitle,
-          value: value,
+          value: value ?? <String>[],
           validateRegEx: validateRegEx,
           weight: weight,
           focusNode: focusNode,
@@ -99,12 +86,51 @@ class HZFFormCheckListModel extends HZFFormFieldModel {
           status: status,
           enableReadOnly: enableReadOnly,
         );
+
+  void dispose() {
+    searchController.dispose();
+  }
 }
 
-class CheckDataModel {
-  String title;
-  bool isSelected;
-  dynamic data;
+/// Item for checklist
+class HZFFormCheckListItem {
+  /// Unique identifier
+  final String id;
 
-  CheckDataModel({required this.title, required this.isSelected, this.data});
+  /// Display text
+  final String label;
+
+  /// Optional subtitle
+  final String? subtitle;
+
+  /// Optional icon
+  final IconData? icon;
+
+  /// Whether item is disabled
+  final bool disabled;
+
+  const HZFFormCheckListItem({
+    required this.id,
+    required this.label,
+    this.subtitle,
+    this.icon,
+    this.disabled = false,
+  });
 }
+
+/*
+USAGE:
+
+HZFFormCheckListModel(
+  tag: 'features',
+  title: 'Select Features',
+  items: [
+    HZFFormCheckListItem(id: 'dark_mode', label: 'Dark Mode', icon: Icons.dark_mode),
+    HZFFormCheckListItem(id: 'backup', label: 'Cloud Backup', subtitle: '2 GB free'),
+    HZFFormCheckListItem(id: 'premium', label: 'Premium Features', disabled: true),
+  ],
+  enableSearch: true,
+  maxSelection: 2,
+)
+
+*/

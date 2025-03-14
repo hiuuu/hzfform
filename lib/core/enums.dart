@@ -3,23 +3,19 @@ enum RequiredCheckListEnum { none, atLeastOneItem, allItem }
 enum HZFFormFieldStatusEnum { normal, success, error, disabled }
 
 enum HZFFormTimePickerType {
-  /// Standard material dial interface
-  dial,
+  dial, // Standard material dial interface
+  spinner, // iOS-style spinner wheel
+  input, // Input fields for hour/minute
+  dropdown, // Compact dropdown style
+  military, // 24-hour format
+  amPm // 12-hour AM/PM format
+}
 
-  /// iOS-style spinner wheel
-  spinner,
-
-  /// Input fields for hour/minute
-  input,
-
-  /// Compact dropdown style
-  dropdown,
-
-  /// 24-hour format
-  military,
-
-  /// 12-hour AM/PM format
-  amPm
+enum NumberDisplayFormat {
+  integer, // 1,234
+  decimal, // 1,234.56
+  currency, // $1,234.56
+  percentage, // 12.34%
 }
 
 enum HZFFormCalendarType { gregorian, hijri, persian, buddhist, japanese }
@@ -35,7 +31,38 @@ enum HZFFormDateFormatType {
   shortText, // 04 تیر ,1401
 }
 
+enum HZFTimeFormat {
+  amPmLowercase, // 3:30 pm
+  amPmUppercase, // 3:30 PM
+  military, // 15:30
+}
+
 enum HZFFormImageSource { camera, gallery, both }
+
+enum HZFCardType {
+  visa,
+  mastercard,
+  amex,
+  discover,
+  shetab,
+  other,
+}
+
+/// Position for character counter
+enum CounterPosition {
+  inline, // Within input decoration
+  below, // Below the text field
+}
+
+/// Predefined mask types
+enum MaskType {
+  phone, // (###) ###-####
+  date, // ##/##/####
+  time, // ##:##
+  creditCard, // #### #### #### ####
+  zipCode, // #####-####
+  currency, // Decimal format
+}
 
 enum HZFFormFieldTypeEnum {
   cell,
@@ -47,7 +74,6 @@ enum HZFFormFieldTypeEnum {
   datePicker,
   dateRangePicker,
   timePicker,
-  price,
   number,
   checkList,
   radioGroup,

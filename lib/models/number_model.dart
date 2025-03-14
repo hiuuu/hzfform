@@ -1,24 +1,61 @@
 // ignore_for_file: use_super_parameters
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'field_model.dart';
 import '../core/enums.dart';
 
 class HZFFormNumberModel extends HZFFormFieldModel {
-  /// Maximum digit length
-  final int? maxLength;
-
-  /// Placeholder text
+  /// Hint text
   final String? hint;
 
-  /// Show character counter
-  final bool? showCounter;
+  /// Allow decimal numbers
+  final bool? allowDecimal;
+
+  /// Allow negative numbers
+  final bool? allowNegative;
+
+  /// Maximum decimal places
+  final int? decimalPlaces;
+
+  /// Minimum value
+  final num? minValue;
+
+  /// Maximum value
+  final num? maxValue;
+
+  /// Use thousand separator
+  final bool? useThousandSeparator;
+
+  /// Thousand separator character
+  final String? thousandSeparator;
+
+  /// Decimal separator character
+  final String? decimalSeparator;
+
+  /// Display format
+  final NumberDisplayFormat? displayFormat;
+
+  /// Currency symbol (for currency format)
+  final String? currencySymbol;
+
+  /// Custom text input formatter
+  final TextInputFormatter? customFormatter;
 
   HZFFormNumberModel({
     required String tag,
-    this.maxLength,
     this.hint,
-    this.showCounter,
+    this.allowDecimal = true,
+    this.allowNegative = false,
+    this.decimalPlaces,
+    this.minValue,
+    this.maxValue,
+    this.useThousandSeparator = false,
+    this.thousandSeparator = ',',
+    this.decimalSeparator = '.',
+    this.displayFormat,
+    this.currencySymbol = '\$',
+    this.customFormatter,
 
     // Parent props
     String? title,
@@ -28,7 +65,7 @@ class HZFFormNumberModel extends HZFFormFieldModel {
     Widget? postfixWidget,
     bool? required,
     bool? showTitle,
-    dynamic value,
+    dynamic value, // num (int or double)
     RegExp? validateRegEx,
     int? weight,
     FocusNode? focusNode,
@@ -47,7 +84,7 @@ class HZFFormNumberModel extends HZFFormFieldModel {
           required: required,
           showTitle: showTitle,
           value: value,
-          validateRegEx: validateRegEx ?? RegExp(r'^[0-9]+(\.[0-9]+)?$'),
+          validateRegEx: validateRegEx,
           weight: weight,
           focusNode: focusNode,
           nextFocusNode: nextFocusNode,
@@ -56,3 +93,38 @@ class HZFFormNumberModel extends HZFFormFieldModel {
           enableReadOnly: enableReadOnly,
         );
 }
+
+
+/*
+USAGE:
+
+// Currency field
+final priceField = HZFFormNumberModel(
+  tag: 'price',
+  title: 'Price',
+  displayFormat: NumberDisplayFormat.currency,
+  currencySymbol: '$',
+  decimalPlaces: 2,
+  minValue: 0,
+);
+
+// Percentage field
+final discountField = HZFFormNumberModel(
+  tag: 'discount',
+  title: 'Discount',
+  displayFormat: NumberDisplayFormat.percentage,
+  decimalPlaces: 1,
+  maxValue: 1.0, // 100%
+);
+
+// European format number
+final europeanNumberField = HZFFormNumberModel(
+  tag: 'amount',
+  title: 'Amount',
+  useThousandSeparator: true,
+  thousandSeparator: '.',
+  decimalSeparator: ',',
+  decimalPlaces: 2,
+);
+
+*/

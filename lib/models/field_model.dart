@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../core/enums.dart';
 
 abstract class HZFFormFieldModel {
@@ -41,4 +40,9 @@ abstract class HZFFormFieldModel {
     bool? enableReadOnly,
   })  : status = status ?? HZFFormFieldStatusEnum.normal,
         enableReadOnly = enableReadOnly ?? false;
+}
+
+abstract class HZFFormFieldCallBack {
+  bool isValid();
+  dynamic getValue();
 }

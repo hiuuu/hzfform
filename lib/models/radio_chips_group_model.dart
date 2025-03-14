@@ -5,44 +5,28 @@ import 'field_model.dart';
 import '../core/enums.dart';
 
 class HZFFormRadioChipsGroupModel extends HZFFormFieldModel {
-  /// Available chip options
-  final List<HZFFormRadioChipsDataModel> items;
+  /// Available options
+  final List<HZFFormRadioChipDataModel> items;
 
-  /// Selection change callback
-  final ValueChanged<HZFFormRadioChipsDataModel?>? onSelected;
+  /// Background color for unselected chips
+  final Color? backgroundColor;
 
-  /// Chip layout direction
-  final Axis direction;
+  /// Color for selected chips
+  final Color? selectedColor;
 
-  /// Spacing between chips
-  final double spacing;
+  /// Text color
+  final Color? textColor;
 
-  /// Run spacing for wrapped chips
-  final double runSpacing;
-
-  /// Allow wrapping to multiple lines
-  final bool wrap;
-
-  /// Chip style customization
-  final HZFChipStyle? chipStyle;
-
-  /// Scrollable container
-  final bool scrollable;
-
-  /// Maximum height when scrollable
-  final double? maxHeight;
+  /// Selected text color
+  final Color? selectedTextColor;
 
   HZFFormRadioChipsGroupModel({
     required String tag,
     required this.items,
-    this.onSelected,
-    this.direction = Axis.horizontal,
-    this.spacing = 8.0,
-    this.runSpacing = 8.0,
-    this.wrap = true,
-    this.chipStyle,
-    this.scrollable = false,
-    this.maxHeight,
+    this.backgroundColor,
+    this.selectedColor,
+    this.textColor,
+    this.selectedTextColor,
 
     // Parent props
     String? title,
@@ -52,7 +36,7 @@ class HZFFormRadioChipsGroupModel extends HZFFormFieldModel {
     Widget? postfixWidget,
     bool? required,
     bool? showTitle,
-    dynamic value,
+    dynamic value, // String (item id)
     RegExp? validateRegEx,
     int? weight,
     FocusNode? focusNode,
@@ -81,8 +65,8 @@ class HZFFormRadioChipsGroupModel extends HZFFormFieldModel {
         );
 }
 
-/// Data model for individual radio chip items
-class HZFFormRadioChipsDataModel {
+/// Data model for radio chip item
+class HZFFormRadioChipDataModel {
   /// Unique identifier
   final String id;
 
@@ -90,86 +74,11 @@ class HZFFormRadioChipsDataModel {
   final String label;
 
   /// Optional icon
-  final Widget? icon;
+  final IconData? icon;
 
-  /// Whether chip is selected
-  final bool isSelected;
-
-  /// Whether chip is enabled
-  final bool isEnabled;
-
-  /// Custom tooltip text
-  final String? tooltip;
-
-  /// Additional custom data
-  final dynamic data;
-
-  const HZFFormRadioChipsDataModel({
+  const HZFFormRadioChipDataModel({
     required this.id,
     required this.label,
     this.icon,
-    this.isSelected = false,
-    this.isEnabled = true,
-    this.tooltip,
-    this.data,
-  });
-
-  /// Create selected copy of this chip
-  HZFFormRadioChipsDataModel copyWithSelection(bool selected) {
-    return HZFFormRadioChipsDataModel(
-      id: id,
-      label: label,
-      icon: icon,
-      isSelected: selected,
-      isEnabled: isEnabled,
-      tooltip: tooltip,
-      data: data,
-    );
-  }
-}
-
-/// Styling options for chips
-class HZFChipStyle {
-  /// Selected background color
-  final Color? selectedColor;
-
-  /// Unselected background color
-  final Color? backgroundColor;
-
-  /// Selected text color
-  final Color? selectedTextColor;
-
-  /// Unselected text color
-  final Color? textColor;
-
-  /// Border color
-  final Color? borderColor;
-
-  /// Selected border color
-  final Color? selectedBorderColor;
-
-  /// Chip shape
-  final ShapeBorder? shape;
-
-  /// Padding within chip
-  final EdgeInsets? padding;
-
-  /// Text style
-  final TextStyle? labelStyle;
-
-  /// Selected text style
-  final TextStyle? selectedLabelStyle;
-
-  const HZFChipStyle({
-    this.selectedColor,
-    this.backgroundColor,
-    this.selectedTextColor,
-    this.textColor,
-    this.borderColor,
-    this.selectedBorderColor,
-    this.shape,
-    this.padding,
-    this.labelStyle,
-    this.selectedLabelStyle,
   });
 }

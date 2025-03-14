@@ -5,22 +5,38 @@ import 'field_model.dart';
 import '../core/enums.dart';
 
 class HZFFormTimePickerModel extends HZFFormFieldModel {
-  /// Placeholder text when no time selected
+  /// Hint text
   final String? hint;
 
-  /// Default time value
-  final TimeOfDay? initialTime;
+  /// Time format
+  final HZFTimeFormat? timeFormat;
 
-  /// Time picker display type (spinner/dial/etc)
-  final HZFFormTimePickerType? timePickerType;
+  /// Initial entry mode
+  final TimePickerEntryMode? initialEntryMode;
+
+  /// Use theme data
+  final bool useThemeData;
+
+  /// Time picker theme
+  final TimePickerThemeData? timePickerTheme;
+
+  /// Color scheme
+  final ColorScheme? colorScheme;
+
+  /// Callback when time is selected
+  final Function(TimeOfDay)? onTimeSelected;
 
   HZFFormTimePickerModel({
     required String tag,
     this.hint,
-    this.initialTime,
-    this.timePickerType,
+    this.timeFormat = HZFTimeFormat.amPmUppercase,
+    this.initialEntryMode,
+    this.useThemeData = false,
+    this.timePickerTheme,
+    this.colorScheme,
+    this.onTimeSelected,
 
-    // Parent class props
+    // Parent props
     String? title,
     String? errorMessage,
     String? helpMessage,
@@ -28,7 +44,7 @@ class HZFFormTimePickerModel extends HZFFormFieldModel {
     Widget? postfixWidget,
     bool? required,
     bool? showTitle,
-    dynamic value,
+    TimeOfDay? value,
     RegExp? validateRegEx,
     int? weight,
     FocusNode? focusNode,
@@ -42,11 +58,11 @@ class HZFFormTimePickerModel extends HZFFormFieldModel {
           title: title,
           errorMessage: errorMessage,
           helpMessage: helpMessage,
-          prefixWidget: prefixWidget ?? const Icon(Icons.access_time),
+          prefixWidget: prefixWidget,
           postfixWidget: postfixWidget,
           required: required,
           showTitle: showTitle,
-          value: value ?? initialTime,
+          value: value,
           validateRegEx: validateRegEx,
           weight: weight,
           focusNode: focusNode,
@@ -55,12 +71,4 @@ class HZFFormTimePickerModel extends HZFFormFieldModel {
           status: status,
           enableReadOnly: enableReadOnly,
         );
-}
-
-class TimeDataModel {
-  String displayTime;
-  int hour;
-  int minute;
-  TimeDataModel(
-      {required this.displayTime, required this.hour, required this.minute});
 }

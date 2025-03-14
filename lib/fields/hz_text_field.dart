@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import '../widgets/controller.dart';
+import '../core/styles.dart';
+import '../models/text_field_model.dart';
 
 class HZTextField extends StatefulWidget {
   final String name;
   final String label;
   final String? initialValue;
   final String? Function(String?)? validator;
-  final HZFormController controller;
+  final HZFFormController controller;
   final TextInputType keyboardType;
   final int maxLines;
 
