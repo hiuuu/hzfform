@@ -56,7 +56,7 @@ class HZFFormVideoPickerModel extends HZFFormFieldModel {
   final Function(VideoFile)? onVideoSelected;
 
   HZFFormVideoPickerModel({
-    required String tag,
+    required super.tag,
     this.enableRecording = true,
     this.enablePicking = true,
     this.enableCompression = true,
@@ -76,39 +76,23 @@ class HZFFormVideoPickerModel extends HZFFormFieldModel {
     this.onVideoSelected,
 
     // Parent props
-    String? title,
-    String? errorMessage,
-    String? helpMessage,
-    Widget? prefixWidget,
-    Widget? postfixWidget,
-    bool? required,
-    bool? showTitle,
-    dynamic value, // VideoFile
-    RegExp? validateRegEx,
-    int? weight,
-    FocusNode? focusNode,
-    FocusNode? nextFocusNode,
-    VoidCallback? onTap,
-    HZFFormFieldStatusEnum? status,
-    bool? enableReadOnly,
+    super.title,
+    super.errorMessage,
+    super.helpMessage,
+    super.prefixWidget,
+    super.postfixWidget,
+    super.required,
+    super.showTitle,
+    super.value, // VideoFile
+    super.validateRegEx,
+    super.weight,
+    super.focusNode,
+    super.nextFocusNode,
+    super.onTap,
+    super.status,
+    super.enableReadOnly,
   }) : super(
-          tag: tag,
           type: HZFFormFieldTypeEnum.videoPicker,
-          title: title,
-          errorMessage: errorMessage,
-          helpMessage: helpMessage,
-          prefixWidget: prefixWidget,
-          postfixWidget: postfixWidget,
-          required: required,
-          showTitle: showTitle,
-          value: value,
-          validateRegEx: validateRegEx,
-          weight: weight,
-          focusNode: focusNode,
-          nextFocusNode: nextFocusNode,
-          onTap: onTap,
-          status: status,
-          enableReadOnly: enableReadOnly,
         );
 }
 
