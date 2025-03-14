@@ -52,9 +52,9 @@ dev_dependencies:
 flutter:
 
   assets:
-    - ic_info.svg
-    - ic_trash.svg
-    - ic_alret.svg
+    - assets/ic_info.svg
+    - assets/ic_trash.svg
+    - assets/ic_alret.svg
 
   # To add assets to your package, add an assets section, like this:
   # assets:
