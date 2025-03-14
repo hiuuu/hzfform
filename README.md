@@ -154,6 +154,7 @@ ElevatedButton(
  Document         `HZFFormDocumentPickerModel`      Document upload/scan  
  Video            `HZFFormVideoPickerModel`         Video recording/selection  
  Audio            `HZFFormAudioPickerModel`         Audio recording/selection 
+ ...
 
 ## Advanced Configuration
 
