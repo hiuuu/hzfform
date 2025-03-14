@@ -90,7 +90,7 @@ enum QRCodeMode {
   both, // Generate and scan QR codes
 }
 
-/// Video compression quality
+/// Video/Audio compression quality
 enum CompressionQuality {
   low,
   medium,
@@ -108,7 +108,6 @@ enum HZFFormFieldTypeEnum {
   number,
   checkList,
   radioGroup,
-  pinCode,
   slider,
   sliderRange,
   bankCard,
