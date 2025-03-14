@@ -42,7 +42,7 @@ class HZFFormController extends ChangeNotifier {
   registerButton(String tag, HZFFormButton button) =>
       _formButtons[tag] = button;
   Map<String, dynamic> getFormValues() => Map.from(_formValues);
-  dynamic getFieldValue(String tag) => _formValues[tag];
+  dynamic getFieldValue(String tag) => getFieldValueSafe(tag);
 
   /// Register multiple field models
   void registerFields(List<HZFFormFieldModel> models) {
@@ -261,6 +261,14 @@ class HZFFormController extends ChangeNotifier {
   void registerDependencies(String dependentTag, List<String> dependsOnTags) {
     for (final dependsOnTag in dependsOnTags) {
       registerDependency(dependentTag, dependsOnTag);
+    }
+  }
+
+  dynamic getFieldValueSafe(String tag) {
+    try {
+      return _formValues[tag];
+    } catch (e) {
+      return null;
     }
   }
 }
