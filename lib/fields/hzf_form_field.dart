@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../core/enums.dart';
 import '../models/field_model.dart';
-import '../widgets/controller.dart';
+import '../core/controller.dart';
 import 'field_builders.dart';
 
 class HZFFormField extends StatefulWidget {

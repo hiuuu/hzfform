@@ -14,7 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../core/enums.dart';
 import '../models/audio_picker_model.dart';
 import '../models/field_model.dart';
-import '../widgets/controller.dart';
+import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
 class AudioPickerFieldBuilder implements FieldBuilder {

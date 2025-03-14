@@ -7,7 +7,7 @@ import 'package:video_compress/video_compress.dart';
 import '../core/enums.dart';
 import '../models/field_model.dart';
 import '../models/video_picker_model.dart';
-import '../widgets/controller.dart';
+import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
 class VideoPickerFieldBuilder implements FieldBuilder {

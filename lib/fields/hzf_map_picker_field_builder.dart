@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 
 import '../models/field_model.dart';
 import '../models/map_picker_model.dart';
-import '../widgets/controller.dart';
+import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
 class MapPickerBuilder implements FieldBuilder {

@@ -5,7 +5,7 @@ import 'package:signature/signature.dart';
 
 import '../models/field_model.dart';
 import '../models/signature_picker_model.dart';
-import '../widgets/controller.dart';
+import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
 class SignatureFieldBuilder implements FieldBuilder {

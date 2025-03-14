@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import '../core/enums.dart';
 import '../models/field_model.dart';
 import '../models/number_model.dart';
-import '../widgets/controller.dart';
+import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
 class NumberFieldBuilder implements FieldBuilder {

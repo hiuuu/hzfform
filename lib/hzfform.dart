@@ -1,8 +1,8 @@
 library;
 
 // Export all components
-export 'widgets/form.dart';
-export 'widgets/controller.dart';
+export 'core/form.dart';
+export 'core/controller.dart';
 export 'fields/field_builders.dart';
 export 'models/models.dart';
 export 'core/enums.dart';

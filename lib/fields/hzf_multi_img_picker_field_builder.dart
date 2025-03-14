@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../core/enums.dart';
 import '../models/field_model.dart';
 import '../models/multi_image_picker_model.dart';
-import '../widgets/controller.dart';
+import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
 class MultiImagePickerBuilder implements FieldBuilder {

@@ -5,7 +5,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import '../core/enums.dart';
 import '../models/field_model.dart';
 import '../models/qrcode_picker_model.dart';
-import '../widgets/controller.dart';
+import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
 class QRCodeFieldBuilder implements FieldBuilder {

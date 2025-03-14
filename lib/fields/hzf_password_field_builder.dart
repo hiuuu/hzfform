@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/field_model.dart';
 import '../models/text_password_model.dart';
-import '../widgets/controller.dart';
+import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
 /// Password field builder

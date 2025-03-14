@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/field_model.dart';
 import '../models/text_area_model.dart';
-import '../widgets/controller.dart';
+import '../core/controller.dart';
 import 'hzf_field_builder.dart';
 
 /// Text plain field builder

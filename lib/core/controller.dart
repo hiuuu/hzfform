@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../core/enums.dart';
+import 'enums.dart';
 import '../models/field_model.dart';
 
 /// Form controller to manage form state
