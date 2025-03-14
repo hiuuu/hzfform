@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="hzfform API docs, for the Dart programming language.">
+  <title>hzfform - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://github.com/hiuuu/hzfform">hzfform package</a></li>
+  </ol>
+  <div class="self-name">hzfform</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="hzfform-flutter-dynamic-form-builder">HZFForm: Flutter Dynamic Form Builder</h1>
+<h2 id="package-overview">Package Overview</h2>
+<p>A comprehensive Flutter form solution with 30+ field types, validation, and media capture capabilities.</p>
+<pre class="language-yaml"><code class="language-yaml">dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Core dependencies
+  provider: ^6.0.5
+  intl: ^0.18.1
+  uuid: ^4.1.0
+  
+  # Field type support
+  google_maps_flutter: ^2.5.0
+  file_picker: ^6.1.1
+  image_picker: ^1.0.4
+  signature: ^5.4.0
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^3.4.1
+  dropdown_search: ^5.0.6
+  
+  # Media handling
+  path_provider: ^2.1.1
+  ffmpeg_kit_flutter: ^6.0.3
+  just_audio: ^0.9.35
+  permission_handler: ^11.0.1
+  
+  # Utilities
+  open_file: ^3.3.2
+  image: ^4.1.3
+  geocoding: ^2.1.1
+  geolocator: ^10.0.1
+</code></pre>
+<h2 id="implemented-field-types">Implemented Field Types</h2>
+<p>Field Type  Model Class  Description  Text  <code>HZFFormTextFieldModel</code>  Text input with validation  Dropdown  <code>HZFFormDropdownModel</code>  Dropdown selection  Checkbox  <code>HZFFormCheckboxModel</code>  Single checkbox  Radio  <code>HZFFormRadioModel</code>  Radio button group  Date  <code>HZFFormDatePickerModel</code>  Date picker  Slider  <code>HZFFormSliderModel</code>  Value slider  Color  <code>HZFFormColorPickerModel</code>  Color selection  Map  <code>HZFFormMapPickerModel</code>  Location picker  Signature  <code>HZFFormSignatureModel</code>  Signature capture  Metadata  <code>HZFFormMetaDataModel</code>  Key-value pairs  QR Code  <code>HZFFormQRCodeModel</code>  QR code scanner/generator  Document  <code>HZFFormDocumentPickerModel</code>  Document upload/scan  Video  <code>HZFFormVideoPickerModel</code>  Video recording/selection  Audio  <code>HZFFormAudioPickerModel</code>  Audio recording/selection</p>
+<h2 id="usage-guide">Usage Guide</h2>
+<h3 id="basic-setup">Basic Setup</h3>
+<pre class="language-dart"><code class="language-dart">// Create form controller
+final formController = HZFFormController();
+
+// Define fields
+final fields = [
+  HZFFormTextFieldModel(
+    tag: 'name',
+    title: 'Full Name',
+    required: true,
+  ),
+  HZFFormEmailFieldModel(
+    tag: 'email',
+    title: 'Email Address',
+  ),
+];
+
+// Create form
+HZFForm(
+  controller: formController,
+  models: fields,
+)
+</code></pre>
+<h3 id="form-controller-features">Form Controller Features</h3>
+<pre class="language-dart"><code class="language-dart">// Set initial values
+controller.initFormValues({
+  'name': 'John Doe',
+  'email': 'john@example.com',
+});
+
+// Field-specific listener
+controller.addFieldListener('email', (value) {
+  print('Email changed: $value');
+});
+
+// Validate form
+if (controller.validate()) {
+  final data = controller.getFormValues();
+  submitForm(data);
+}
+</code></pre>
+<h3 id="form-sections">Form Sections</h3>
+<pre class="language-dart"><code class="language-dart">HZFForm(
+  controller: controller,
+  sections: [
+    HZFFormSection(
+      title: 'Personal Information',
+      models: [nameField, emailField, phoneField],
+    ),
+    HZFFormSection(
+      title: 'Address',
+      models: [addressField, cityField, zipField],
+    ),
+  ],
+)
+</code></pre>
+<h3 id="field-dependencies">Field Dependencies</h3>
+<pre class="language-dart"><code class="language-dart">final countryField = HZFFormDropdownModel(
+  tag: 'country',
+  title: 'Country',
+  items: ['USA', 'Canada', 'UK'],
+);
+
+final stateField = HZFFormDropdownModel(
+  tag: 'state',
+  title: 'State/Province',
+  dependsOn: 'country',
+  itemsBuilder: (country) {
+    switch(country) {
+      case 'USA': return ['California', 'Texas', 'New York'];
+      case 'Canada': return ['Ontario', 'Quebec', 'British Columbia'];
+      case 'UK': return ['England', 'Scotland', 'Wales'];
+      default: return [];
+    }
+  },
+);
+</code></pre>
+<h3 id="form-styling">Form Styling</h3>
+<pre class="language-dart"><code class="language-dart">HZFForm(
+  controller: controller,
+  models: fields,
+  style: HZFFormStyle(
+    inputDecoration: InputDecoration(
+      border: OutlineInputBorder(),
+      filled: true,
+      fillColor: Colors.grey[100],
+    ),
+    fieldSpacing: 16.0,
+    sectionSpacing: 24.0,
+    titleStyle: TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 16.0,
+    ),
+    errorStyle: TextStyle(
+      color: Colors.red[700],
+      fontSize: 12.0,
+    ),
+  ),
+)
+</code></pre>
+<h3 id="form-actions">Form Actions</h3>
+<pre class="language-dart"><code class="language-dart">HZFForm(
+  controller: controller,
+  models: fields,
+  actions: HZFFormActions(
+    submitButton: HZFFormButton(
+      text: 'Submit Application',
+      icon: Icons.send,
+      onPressed: (formData) {
+        submitApplication(formData);
+      },
+    ),
+    cancelButton: HZFFormButton(
+      text: 'Cancel',
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.grey,
+      ),
+      onPressed: (_) {
+        Navigator.pop(context);
+      },
+    ),
+  ),
+)
+</code></pre>
+<h3 id="custom-field-builder">Custom Field Builder</h3>
+<pre class="language-dart"><code class="language-dart">// Create custom field model
+class RatingFieldModel extends HZFFormFieldModel {
+  final int maxStars;
+  
+  RatingFieldModel({
+    required String tag,
+    required String title,
+    this.maxStars = 5,
+  }) : super(
+    tag: tag,
+    title: title,
+    type: HZFFormFieldTypeEnum.custom,
+  );
+}
+
+// Register custom field builder
+HZFForm.registerCustomBuilder(
+  'rating',
+  (model, controller, context) {
+    final ratingModel = model as RatingFieldModel;
+    final currentRating = model.value as int? ?? 0;
+    
+    return Row(
+      children: List.generate(
+        ratingModel.maxStars,
+        (index) =&gt; IconButton(
+          icon: Icon(
+            index &lt; currentRating ? Icons.star : Icons.star_border,
+            color: Colors.amber,
+          ),
+          onPressed: () {
+            controller.updateFieldValue(model.tag, index + 1);
+          },
+        ),
+      ),
+    );
+  },
+);
+</code></pre>
+<h2 id="media-field-examples">Media Field Examples</h2>
+<h3 id="signature-capture">Signature Capture</h3>
+<pre class="language-dart"><code class="language-dart">final signatureField = HZFFormSignatureModel(
+  tag: 'signature',
+  title: 'Signature',
+  height: 200,
+  penColor: Colors.blue,
+  strokeWidth: 3.0,
+  onSignatureCaptured: (bytes) {
+    // Save signature image
+    saveSignature(bytes);
+  },
+);
+</code></pre>
+<h3 id="location-picker">Location Picker</h3>
+<pre class="language-dart"><code class="language-dart">final locationField = HZFFormMapPickerModel(
+  tag: 'location',
+  title: 'Business Location',
+  defaultCenter: LatLng(37.7749, -122.4194),
+  enableSearch: true,
+  placesClient: GooglePlacesClient(apiKey: 'YOUR_API_KEY'),
+);
+</code></pre>
+<h3 id="document-scanner">Document Scanner</h3>
+<pre class="language-dart"><code class="language-dart">final documentField = HZFFormDocumentPickerModel(
+  tag: 'document',
+  title: 'ID Document',
+  enableScanning: true,
+  fileType: FileType.image,
+  scanHelpText: 'Position your ID within the frame',
+);
+</code></pre>
+<h3 id="video-recorder">Video Recorder</h3>
+<pre class="language-dart"><code class="language-dart">final videoField = HZFFormVideoPickerModel(
+  tag: 'video',
+  title: 'Product Demo',
+  enableRecording: true,
+  enablePicking: true,
+  maxDuration: Duration(minutes: 2),
+  compressionQuality: CompressionQuality.high,
+);
+</code></pre>
+<h3 id="audio-recorder">Audio Recorder</h3>
+<pre class="language-dart"><code class="language-dart">final audioField = HZFFormAudioPickerModel(
+  tag: 'audio',
+  title: 'Voice Note',
+  maxDuration: Duration(minutes: 1),
+  compressionQuality: CompressionQuality.medium,
+);
+</code></pre>
+<h3 id="qr-code-scanner">QR Code Scanner</h3>
+<pre class="language-dart"><code class="language-dart">final qrField = HZFFormQRCodeModel(
+  tag: 'qrCode',
+  title: 'Scan Product Code',
+  mode: QRCodeMode.scan,
+  scanValidator: (code) =&gt; code.startsWith('PROD-'),
+);
+</code></pre>
+<h3 id="metadata-field">Metadata Field</h3>
+<pre class="language-dart"><code class="language-dart">final metadataField = HZFFormMetaDataModel(
+  tag: 'attributes',
+  title: 'Product Attributes',
+  keyOptions: ['Color', 'Size', 'Material', 'Weight'],
+  minEntries: 1,
+  maxEntries: 5,
+);
+</code></pre>
+<h2 id="performance-tips">Performance Tips</h2>
+<ul>
+<li>Use <code>const</code> widgets when possible</li>
+<li>Implement lazy loading for large forms</li>
+<li>Use <code>weight</code> property to control field order</li>
+<li>Consider form pagination for complex workflows</li>
+<li>Optimize image compression in media fields</li>
+</ul>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="actions">
+  <span class="name"><a href="core_actions">core\actions</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="controller">
+  <span class="name"><a href="core_controller">core\controller</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="enums">
+  <span class="name"><a href="core_enums">core\enums</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="form">
+  <span class="name"><a href="core_form">core\form</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="sections">
+  <span class="name"><a href="core_sections">core\sections</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="styles">
+  <span class="name"><a href="core_styles">core\styles</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="field_builders">
+  <span class="name"><a href="fields_field_builders">fields\field_builders</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_audio_picker_field_builder">
+  <span class="name"><a href="fields_hzf_audio_picker_field_builder">fields\hzf_audio_picker_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_bank_card_field_builder">
+  <span class="name"><a href="fields_hzf_bank_card_field_builder">fields\hzf_bank_card_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_check_builder">
+  <span class="name"><a href="fields_hzf_check_builder">fields\hzf_check_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_check_chips_field_builder">
+  <span class="name"><a href="fields_hzf_check_chips_field_builder">fields\hzf_check_chips_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_check_list_builder">
+  <span class="name"><a href="fields_hzf_check_list_builder">fields\hzf_check_list_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_color_picker_field_builder">
+  <span class="name"><a href="fields_hzf_color_picker_field_builder">fields\hzf_color_picker_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_date_picker_field_builder">
+  <span class="name"><a href="fields_hzf_date_picker_field_builder">fields\hzf_date_picker_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_date_range_field_builder">
+  <span class="name"><a href="fields_hzf_date_range_field_builder">fields\hzf_date_range_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_doc_picker_field_builder">
+  <span class="name"><a href="fields_hzf_doc_picker_field_builder">fields\hzf_doc_picker_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_field_builder">
+  <span class="name"><a href="fields_hzf_field_builder">fields\hzf_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_form_field">
+  <span class="name"><a href="fields_hzf_form_field">fields\hzf_form_field</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_image_picker_field_builder">
+  <span class="name"><a href="fields_hzf_image_picker_field_builder">fields\hzf_image_picker_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_map_picker_field_builder">
+  <span class="name"><a href="fields_hzf_map_picker_field_builder">fields\hzf_map_picker_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_meta_data_field_builder">
+  <span class="name"><a href="fields_hzf_meta_data_field_builder">fields\hzf_meta_data_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_multi_img_picker_field_builder">
+  <span class="name"><a href="fields_hzf_multi_img_picker_field_builder">fields\hzf_multi_img_picker_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_number_field_builder">
+  <span class="name"><a href="fields_hzf_number_field_builder">fields\hzf_number_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_password_field_builder">
+  <span class="name"><a href="fields_hzf_password_field_builder">fields\hzf_password_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_qrcode_picker_field_builder">
+  <span class="name"><a href="fields_hzf_qrcode_picker_field_builder">fields\hzf_qrcode_picker_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_radio_chips_field_builder">
+  <span class="name"><a href="fields_hzf_radio_chips_field_builder">fields\hzf_radio_chips_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_radio_group_field_builder">
+  <span class="name"><a href="fields_hzf_radio_group_field_builder">fields\hzf_radio_group_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_search_dropdown_field_builder">
+  <span class="name"><a href="fields_hzf_search_dropdown_field_builder">fields\hzf_search_dropdown_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_signature_picker_field_builder">
+  <span class="name"><a href="fields_hzf_signature_picker_field_builder">fields\hzf_signature_picker_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_slider_field_builder">
+  <span class="name"><a href="fields_hzf_slider_field_builder">fields\hzf_slider_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_slider_range_field_builder">
+  <span class="name"><a href="fields_hzf_slider_range_field_builder">fields\hzf_slider_range_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_spinner_field_builder">
+  <span class="name"><a href="fields_hzf_spinner_field_builder">fields\hzf_spinner_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_text_field_builder">
+  <span class="name"><a href="fields_hzf_text_field_builder">fields\hzf_text_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_textarea_field_builder">
+  <span class="name"><a href="fields_hzf_textarea_field_builder">fields\hzf_textarea_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_time_picker_field_builder">
+  <span class="name"><a href="fields_hzf_time_picker_field_builder">fields\hzf_time_picker_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzf_video_picker_field_builder">
+  <span class="name"><a href="fields_hzf_video_picker_field_builder">fields\hzf_video_picker_field_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hzfform">
+  <span class="name"><a href="hzfform">hzfform</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="audio_picker_model">
+  <span class="name"><a href="models_audio_picker_model">models\audio_picker_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="bank_card_filed_model">
+  <span class="name"><a href="models_bank_card_filed_model">models\bank_card_filed_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="check_chips_list_model">
+  <span class="name"><a href="models_check_chips_list_model">models\check_chips_list_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="check_list_model">
+  <span class="name"><a href="models_check_list_model">models\check_list_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="check_model">
+  <span class="name"><a href="models_check_model">models\check_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="color_picker_model">
+  <span class="name"><a href="models_color_picker_model">models\color_picker_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="date_picker_model">
+  <span class="name"><a href="models_date_picker_model">models\date_picker_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="date_range_picker_model">
+  <span class="name"><a href="models_date_range_picker_model">models\date_range_picker_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="doc_picker_model">
+  <span class="name"><a href="models_doc_picker_model">models\doc_picker_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="field_model">
+  <span class="name"><a href="models_field_model">models\field_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="image_picker_model">
+  <span class="name"><a href="models_image_picker_model">models\image_picker_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="map_picker_model">
+  <span class="name"><a href="models_map_picker_model">models\map_picker_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="meta_data_model">
+  <span class="name"><a href="models_meta_data_model">models\meta_data_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="models">
+  <span class="name"><a href="models_models">models\models</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="multi_image_picker_model">
+  <span class="name"><a href="models_multi_image_picker_model">models\multi_image_picker_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="number_model">
+  <span class="name"><a href="models_number_model">models\number_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="qrcode_picker_model">
+  <span class="name"><a href="models_qrcode_picker_model">models\qrcode_picker_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="radio_chips_group_model">
+  <span class="name"><a href="models_radio_chips_group_model">models\radio_chips_group_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="radio_group_model">
+  <span class="name"><a href="models_radio_group_model">models\radio_group_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="search_dropdown_model">
+  <span class="name"><a href="models_search_dropdown_model">models\search_dropdown_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="signature_picker_model">
+  <span class="name"><a href="models_signature_picker_model">models\signature_picker_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="slider_model">
+  <span class="name"><a href="models_slider_model">models\slider_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="slider_range_model">
+  <span class="name"><a href="models_slider_range_model">models\slider_range_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="spinner_model">
+  <span class="name"><a href="models_spinner_model">models\spinner_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="text_area_model">
+  <span class="name"><a href="models_text_area_model">models\text_area_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="text_field_model">
+  <span class="name"><a href="models_text_field_model">models\text_field_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="text_password_model">
+  <span class="name"><a href="models_text_password_model">models\text_password_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="time_picker_model">
+  <span class="name"><a href="models_time_picker_model">models\time_picker_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="video_picker_model">
+  <span class="name"><a href="models_video_picker_model">models\video_picker_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="https://github.com/hiuuu/hzfform">hzfform package</a></li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">hzfform</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="core_actions">core\actions</a></li>
+      <li><a href="core_controller">core\controller</a></li>
+      <li><a href="core_enums">core\enums</a></li>
+      <li><a href="core_form">core\form</a></li>
+      <li><a href="core_sections">core\sections</a></li>
+      <li><a href="core_styles">core\styles</a></li>
+      <li><a href="fields_field_builders">fields\field_builders</a></li>
+      <li><a href="fields_hzf_audio_picker_field_builder">fields\hzf_audio_picker_field_builder</a></li>
+      <li><a href="fields_hzf_bank_card_field_builder">fields\hzf_bank_card_field_builder</a></li>
+      <li><a href="fields_hzf_check_builder">fields\hzf_check_builder</a></li>
+      <li><a href="fields_hzf_check_chips_field_builder">fields\hzf_check_chips_field_builder</a></li>
+      <li><a href="fields_hzf_check_list_builder">fields\hzf_check_list_builder</a></li>
+      <li><a href="fields_hzf_color_picker_field_builder">fields\hzf_color_picker_field_builder</a></li>
+      <li><a href="fields_hzf_date_picker_field_builder">fields\hzf_date_picker_field_builder</a></li>
+      <li><a href="fields_hzf_date_range_field_builder">fields\hzf_date_range_field_builder</a></li>
+      <li><a href="fields_hzf_doc_picker_field_builder">fields\hzf_doc_picker_field_builder</a></li>
+      <li><a href="fields_hzf_field_builder">fields\hzf_field_builder</a></li>
+      <li><a href="fields_hzf_form_field">fields\hzf_form_field</a></li>
+      <li><a href="fields_hzf_image_picker_field_builder">fields\hzf_image_picker_field_builder</a></li>
+      <li><a href="fields_hzf_map_picker_field_builder">fields\hzf_map_picker_field_builder</a></li>
+      <li><a href="fields_hzf_meta_data_field_builder">fields\hzf_meta_data_field_builder</a></li>
+      <li><a href="fields_hzf_multi_img_picker_field_builder">fields\hzf_multi_img_picker_field_builder</a></li>
+      <li><a href="fields_hzf_number_field_builder">fields\hzf_number_field_builder</a></li>
+      <li><a href="fields_hzf_password_field_builder">fields\hzf_password_field_builder</a></li>
+      <li><a href="fields_hzf_qrcode_picker_field_builder">fields\hzf_qrcode_picker_field_builder</a></li>
+      <li><a href="fields_hzf_radio_chips_field_builder">fields\hzf_radio_chips_field_builder</a></li>
+      <li><a href="fields_hzf_radio_group_field_builder">fields\hzf_radio_group_field_builder</a></li>
+      <li><a href="fields_hzf_search_dropdown_field_builder">fields\hzf_search_dropdown_field_builder</a></li>
+      <li><a href="fields_hzf_signature_picker_field_builder">fields\hzf_signature_picker_field_builder</a></li>
+      <li><a href="fields_hzf_slider_field_builder">fields\hzf_slider_field_builder</a></li>
+      <li><a href="fields_hzf_slider_range_field_builder">fields\hzf_slider_range_field_builder</a></li>
+      <li><a href="fields_hzf_spinner_field_builder">fields\hzf_spinner_field_builder</a></li>
+      <li><a href="fields_hzf_text_field_builder">fields\hzf_text_field_builder</a></li>
+      <li><a href="fields_hzf_textarea_field_builder">fields\hzf_textarea_field_builder</a></li>
+      <li><a href="fields_hzf_time_picker_field_builder">fields\hzf_time_picker_field_builder</a></li>
+      <li><a href="fields_hzf_video_picker_field_builder">fields\hzf_video_picker_field_builder</a></li>
+      <li><a href="hzfform">hzfform</a></li>
+      <li><a href="models_audio_picker_model">models\audio_picker_model</a></li>
+      <li><a href="models_bank_card_filed_model">models\bank_card_filed_model</a></li>
+      <li><a href="models_check_chips_list_model">models\check_chips_list_model</a></li>
+      <li><a href="models_check_list_model">models\check_list_model</a></li>
+      <li><a href="models_check_model">models\check_model</a></li>
+      <li><a href="models_color_picker_model">models\color_picker_model</a></li>
+      <li><a href="models_date_picker_model">models\date_picker_model</a></li>
+      <li><a href="models_date_range_picker_model">models\date_range_picker_model</a></li>
+      <li><a href="models_doc_picker_model">models\doc_picker_model</a></li>
+      <li><a href="models_field_model">models\field_model</a></li>
+      <li><a href="models_image_picker_model">models\image_picker_model</a></li>
+      <li><a href="models_map_picker_model">models\map_picker_model</a></li>
+      <li><a href="models_meta_data_model">models\meta_data_model</a></li>
+      <li><a href="models_models">models\models</a></li>
+      <li><a href="models_multi_image_picker_model">models\multi_image_picker_model</a></li>
+      <li><a href="models_number_model">models\number_model</a></li>
+      <li><a href="models_qrcode_picker_model">models\qrcode_picker_model</a></li>
+      <li><a href="models_radio_chips_group_model">models\radio_chips_group_model</a></li>
+      <li><a href="models_radio_group_model">models\radio_group_model</a></li>
+      <li><a href="models_search_dropdown_model">models\search_dropdown_model</a></li>
+      <li><a href="models_signature_picker_model">models\signature_picker_model</a></li>
+      <li><a href="models_slider_model">models\slider_model</a></li>
+      <li><a href="models_slider_range_model">models\slider_range_model</a></li>
+      <li><a href="models_spinner_model">models\spinner_model</a></li>
+      <li><a href="models_text_area_model">models\text_area_model</a></li>
+      <li><a href="models_text_field_model">models\text_field_model</a></li>
+      <li><a href="models_text_password_model">models\text_password_model</a></li>
+      <li><a href="models_time_picker_model">models\time_picker_model</a></li>
+      <li><a href="models_video_picker_model">models\video_picker_model</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    hzfform
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

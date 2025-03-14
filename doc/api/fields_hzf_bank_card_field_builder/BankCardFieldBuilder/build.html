@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the build method from the BankCardFieldBuilder class, for the Dart programming language.">
+  <title>build method - BankCardFieldBuilder class - hzf_bank_card_field_builder library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">hzfform</a></li>
+    <li><a href="../../fields_hzf_bank_card_field_builder">fields\hzf_bank_card_field_builder.dart</a></li>
+    <li><a href="../../fields_hzf_bank_card_field_builder/BankCardFieldBuilder-class.html">BankCardFieldBuilder</a></li>
+    <li class="self-crumb">build method</li>
+  </ol>
+  <div class="self-name">build</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="fields_hzf_bank_card_field_builder&#47;BankCardFieldBuilder-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">build</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+  <div>
+    <ol class="annotation-list">
+        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
+    </ol>
+  </div>
+<span class="returntype"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span>
+<span class="name ">build</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="build-param-model"><span class="type-annotation"><a href="../../models_field_model/HZFFormFieldModel-class.html">HZFFormFieldModel</a></span> <span class="parameter-name">model</span>, </span></li>
+<li><span class="parameter" id="build-param-controller"><span class="type-annotation"><a href="../../core_controller/HZFFormController-class.html">HZFFormController</a></span> <span class="parameter-name">controller</span>, </span></li>
+<li><span class="parameter" id="build-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span></li>
+</ol>)
+
+      <div class="features"><span class="feature">override</span></div>
+
+    </section>
+    
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">@override
+Widget build(
+  HZFFormFieldModel model,
+  HZFFormController controller,
+  BuildContext context,
+) {
+  final cardModel = model as HZFFormBankCardModel;
+
+  return Material(
+    type: MaterialType.transparency,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        &#47;&#47; Card number field with formatting
+        TextFormField(
+          initialValue: cardModel.value?.number,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            _CreditCardFormatter(),
+          ],
+          maxLength: 19, &#47;&#47; 16 digits + 3 spaces
+          decoration: InputDecoration(
+            hintText: cardModel.hint ?? &#39;Card number&#39;,
+            prefixIcon:
+                cardModel.prefixWidget ?? const Icon(Icons.credit_card),
+            suffixIcon: _buildCardTypeIcon(cardModel.detectedCardType),
+            border: const OutlineInputBorder(),
+            counterText: &#39;&#39;, &#47;&#47; Hide character counter
+          ),
+          enabled: cardModel.enableReadOnly != true,
+          focusNode: cardModel.focusNode,
+          onChanged: (value) {
+            final cardType = _detectCardType(value.replaceAll(&#39; &#39;, &#39;&#39;));
+
+            &#47;&#47; Update card info with new number and detected type
+            final updatedCard = HZFBankCardInfo(
+              number: value,
+              expiryMonth: cardModel.value?.expiryMonth,
+              expiryYear: cardModel.value?.expiryYear,
+              cvv: cardModel.value?.cvv,
+              cardHolderName: cardModel.value?.cardHolderName,
+              cardType: cardType,
+            );
+
+            controller.updateFieldValue(cardModel.tag, updatedCard);
+
+            &#47;&#47; Move to expiry field when card number is complete
+            if (value.replaceAll(&#39; &#39;, &#39;&#39;).length == 16 &amp;&amp;
+                cardModel.expiryFocus != null) {
+              FocusScope.of(context).requestFocus(cardModel.expiryFocus);
+            }
+          },
+        ),
+
+        const SizedBox(height: 12),
+
+        &#47;&#47; Row for expiry and CVV
+        Row(
+          children: [
+            &#47;&#47; Expiry date field
+            Expanded(
+              flex: 1,
+              child: TextFormField(
+                initialValue: _formatExpiry(cardModel.value?.expiryMonth,
+                    cardModel.value?.expiryYear),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  _ExpiryDateFormatter(),
+                ],
+                maxLength: 5, &#47;&#47; MM&#47;YY
+                decoration: InputDecoration(
+                  hintText: cardModel.expiryHint ?? &#39;MM&#47;YY&#39;,
+                  prefixIcon: const Icon(Icons.date_range),
+                  border: const OutlineInputBorder(),
+                  counterText: &#39;&#39;,
+                ),
+                enabled: cardModel.enableReadOnly != true,
+                focusNode: cardModel.expiryFocus,
+                onChanged: (value) {
+                  &#47;&#47; Parse MM&#47;YY format
+                  final parts = value.split(&#39;&#47;&#39;);
+                  String? month, year;
+
+                  if (parts.isNotEmpty) month = parts[0];
+                  if (parts.length &gt; 1) year = parts[1];
+
+                  &#47;&#47; Update card info with new expiry
+                  final updatedCard = HZFBankCardInfo(
+                    number: cardModel.value?.number,
+                    expiryMonth: month,
+                    expiryYear: year,
+                    cvv: cardModel.value?.cvv,
+                    cardHolderName: cardModel.value?.cardHolderName,
+                    cardType: cardModel.value?.cardType,
+                  );
+
+                  controller.updateFieldValue(cardModel.tag, updatedCard);
+
+                  &#47;&#47; Move to CVV when expiry is complete
+                  if (value.length == 5 &amp;&amp; cardModel.cvvFocus != null) {
+                    FocusScope.of(context).requestFocus(cardModel.cvvFocus);
+                  }
+                },
+              ),
+            ),
+
+            const SizedBox(width: 12),
+
+            &#47;&#47; CVV field
+            Expanded(
+              flex: 1,
+              child: TextFormField(
+                initialValue: cardModel.value?.cvv,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(
+                      cardModel.value?.cardType == HZFCardType.amex ? 4 : 3),
+                ],
+                maxLength:
+                    cardModel.value?.cardType == HZFCardType.amex ? 4 : 3,
+                decoration: InputDecoration(
+                  hintText: cardModel.cvvHint ?? &#39;CVV&#39;,
+                  prefixIcon: const Icon(Icons.security),
+                  border: const OutlineInputBorder(),
+                  counterText: &#39;&#39;,
+                ),
+                obscureText: !cardModel.showCvv,
+                enabled: cardModel.enableReadOnly != true,
+                focusNode: cardModel.cvvFocus,
+                onChanged: (value) {
+                  &#47;&#47; Update card info with new CVV
+                  final updatedCard = HZFBankCardInfo(
+                    number: cardModel.value?.number,
+                    expiryMonth: cardModel.value?.expiryMonth,
+                    expiryYear: cardModel.value?.expiryYear,
+                    cvv: value,
+                    cardHolderName: cardModel.value?.cardHolderName,
+                    cardType: cardModel.value?.cardType,
+                  );
+
+                  controller.updateFieldValue(cardModel.tag, updatedCard);
+
+                  &#47;&#47; Move to cardholder name when CVV is complete
+                  final isCvvComplete =
+                      cardModel.value?.cardType == HZFCardType.amex
+                          ? value.length == 4
+                          : value.length == 3;
+
+                  if (isCvvComplete &amp;&amp; cardModel.nameFocus != null) {
+                    FocusScope.of(context).requestFocus(cardModel.nameFocus);
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+
+        if (cardModel.showCardholderName) ...[
+          const SizedBox(height: 12),
+
+          &#47;&#47; Cardholder name field
+          TextFormField(
+            initialValue: cardModel.value?.cardHolderName,
+            textCapitalization: TextCapitalization.characters,
+            decoration: InputDecoration(
+              hintText: cardModel.nameHint ?? &#39;CARDHOLDER NAME&#39;,
+              prefixIcon: const Icon(Icons.person),
+              border: const OutlineInputBorder(),
+            ),
+            style: const TextStyle(letterSpacing: 1.2),
+            enabled: cardModel.enableReadOnly != true,
+            focusNode: cardModel.nameFocus,
+            onChanged: (value) {
+              &#47;&#47; Update card info with new name
+              final updatedCard = HZFBankCardInfo(
+                number: cardModel.value?.number,
+                expiryMonth: cardModel.value?.expiryMonth,
+                expiryYear: cardModel.value?.expiryYear,
+                cvv: cardModel.value?.cvv,
+                cardHolderName: value,
+                cardType: cardModel.value?.cardType,
+              );
+
+              controller.updateFieldValue(cardModel.tag, updatedCard);
+            },
+          ),
+        ],
+      ],
+    ),
+  );
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">hzfform</a></li>
+    <li><a href="../../fields_hzf_bank_card_field_builder">hzf_bank_card_field_builder</a></li>
+    <li><a href="../../fields_hzf_bank_card_field_builder/BankCardFieldBuilder-class.html">BankCardFieldBuilder</a></li>
+    <li class="self-crumb">build method</li>
+</ol>
+
+    <h5>BankCardFieldBuilder class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    hzfform
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
