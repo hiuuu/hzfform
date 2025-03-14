@@ -194,6 +194,15 @@ class HZFFormFieldFactory {
       case HZFFormFieldTypeEnum.documentPicker:
         return DocumentPickerFieldBuilder().build(model, controller, context);
 
+      case HZFFormFieldTypeEnum.videoPicker:
+        return VideoPickerFieldBuilder().build(model, controller, context);
+
+      case HZFFormFieldTypeEnum.audioPicker:
+        return AudioPickerFieldBuilder().build(model, controller, context);
+
+      case HZFFormFieldTypeEnum.signaturePicker:
+        return SignaturePickerFieldBuilder().build(model, controller, context);
+
       default:
         return const SizedBox(
           child: Text("Unsupported field type"),
@@ -202,5 +211,5 @@ class HZFFormFieldFactory {
   }
 }
 
-// TODO: please generate audioPickerFieldBuilder, videoPickerFieldBuilder , signatureFieldBuilder
+// TODO: please generate audioPickerFieldBuilder that be from camera or storage, with compress , signatureFieldBuilder
 // TODO: RTL support and localization and themes

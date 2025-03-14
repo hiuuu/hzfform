@@ -21,3 +21,6 @@ export 'map_picker_model.dart';
 export 'color_picker_model.dart';
 export 'qrcode_picker_model.dart';
 export 'doc_picker_model.dart';
+export 'video_picker_model.dart';
+export 'audio_picker_model.dart';
+export 'signature_picker_model.dart';

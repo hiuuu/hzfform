@@ -21,3 +21,6 @@ export 'hzf_map_picker_field_builder.dart';
 export 'hzf_color_picker_field_builder.dart';
 export 'hzf_qrcode_picker_field_builder.dart';
 export 'hzf_doc_picker_field_builder.dart';
+export 'hzf_video_picker_field_builder.dart';
+export 'hzf_audio_picker_field_builder.dart';
+export 'hzf_signature_picker_field_builder.dart';

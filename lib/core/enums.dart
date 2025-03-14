@@ -90,6 +90,13 @@ enum QRCodeMode {
   both, // Generate and scan QR codes
 }
 
+/// Video compression quality
+enum CompressionQuality {
+  low,
+  medium,
+  high,
+}
+
 enum HZFFormFieldTypeEnum {
   password,
   text,
