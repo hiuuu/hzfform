@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../core/controller.dart' show HZFFormController;
 import '../core/enums.dart';
 
 abstract class HZFFormFieldModel {
@@ -20,7 +21,6 @@ abstract class HZFFormFieldModel {
   dynamic value;
   bool? enableReadOnly;
   VoidCallback? onTap;
-  dynamic Function(String, dynamic)? onDependencyChanged;
 
   HZFFormFieldModel({
     this.type,
@@ -39,7 +39,6 @@ abstract class HZFFormFieldModel {
     this.focusNode,
     this.nextFocusNode,
     this.onTap,
-    this.onDependencyChanged,
     HZFFormFieldStatusEnum? status,
     bool? enableReadOnly,
   })  : status = status ?? HZFFormFieldStatusEnum.normal,
@@ -49,4 +48,20 @@ abstract class HZFFormFieldModel {
 abstract class HZFFormFieldCallBack {
   bool isValid();
   dynamic getValue();
+}
+
+/// Dependency-aware field model mixin
+mixin HZFFormDependentFieldMixin on HZFFormFieldModel {
+  /// Tags of fields this field depends on
+  List<String> get dependsOn;
+
+  /// Called when a dependency changes
+  void onDependencyChanged(String dependencyTag, dynamic value);
+
+  /// Register dependencies with controller
+  void registerDependencies(HZFFormController controller) {
+    for (final tag in dependsOn) {
+      controller.registerDependency(this.tag, tag);
+    }
+  }
 }

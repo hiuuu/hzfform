@@ -227,9 +227,9 @@ class HZFFormController extends ChangeNotifier {
       if (!isFieldVisible(dependentTag)) continue;
 
       // Update field if it has a dependency update handler
-      if (model.onDependencyChanged != null) {
-        model.onDependencyChanged!(tag, _formValues[tag]);
-      }
+      // if (model.onDependencyChanged != null) {
+      //   model.onDependencyChanged!(tag, _formValues[tag]);
+      // }
     }
   }
 
@@ -250,5 +250,17 @@ class HZFFormController extends ChangeNotifier {
     _dependencyGraph.clear();
     _formButtons.clear();
     super.dispose();
+  }
+
+  /// Register dependency between fields
+  void registerDependency(String dependentTag, String dependsOnTag) {
+    _dependencyGraph.putIfAbsent(dependsOnTag, () => {}).add(dependentTag);
+  }
+
+  /// Register multiple dependencies for a field
+  void registerDependencies(String dependentTag, List<String> dependsOnTags) {
+    for (final dependsOnTag in dependsOnTags) {
+      registerDependency(dependentTag, dependsOnTag);
+    }
   }
 }
