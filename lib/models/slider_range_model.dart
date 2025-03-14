@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import '../core/enums.dart';
 import 'field_model.dart';
 
-class HZFFormSliderModel extends HZFFormFieldModel {
+class HZFFormSliderRangeModel extends HZFFormFieldModel {
   /// Minimum value
   final double min;
 
   /// Maximum value
   final double max;
 
-  /// Default value
-  final double? defaultValue;
+  /// Default range
+  final RangeValues? defaultRange;
 
   /// Number of divisions
   final int? divisions;
@@ -21,8 +21,11 @@ class HZFFormSliderModel extends HZFFormFieldModel {
   /// Decimal precision for display and value
   final int decimalPrecision;
 
-  /// Show value display
-  final bool showValue;
+  /// Minimum span between start and end
+  final double? minSpan;
+
+  /// Show values display
+  final bool showValues;
 
   /// Show min/max labels
   final bool showMinMaxLabels;
@@ -48,9 +51,6 @@ class HZFFormSliderModel extends HZFFormFieldModel {
   /// Inactive track color
   final Color? inactiveColor;
 
-  /// Thumb color
-  final Color? thumbColor;
-
   /// Value text style
   final TextStyle? valueTextStyle;
 
@@ -64,22 +64,23 @@ class HZFFormSliderModel extends HZFFormFieldModel {
   final TextStyle? valueSuffixStyle;
 
   /// Callback when value changes
-  final void Function(double)? onChanged;
+  final void Function(RangeValues)? onChanged;
 
   /// Callback when user starts changing value
-  final void Function(double)? onChangeStart;
+  final void Function(RangeValues)? onChangeStart;
 
   /// Callback when user stops changing value
-  final void Function(double)? onChangeEnd;
+  final void Function(RangeValues)? onChangeEnd;
 
-  HZFFormSliderModel({
+  HZFFormSliderRangeModel({
     required String tag,
     required this.min,
     required this.max,
-    this.defaultValue,
+    this.defaultRange,
     this.divisions,
     this.decimalPrecision = 1,
-    this.showValue = true,
+    this.minSpan,
+    this.showValues = true,
     this.showMinMaxLabels = true,
     this.minLabel,
     this.maxLabel,
@@ -88,7 +89,6 @@ class HZFFormSliderModel extends HZFFormFieldModel {
     this.formatValue,
     this.activeColor,
     this.inactiveColor,
-    this.thumbColor,
     this.valueTextStyle,
     this.minMaxLabelStyle,
     this.valuePrefixStyle,
@@ -105,7 +105,7 @@ class HZFFormSliderModel extends HZFFormFieldModel {
     Widget? postfixWidget,
     bool? required,
     bool? showTitle,
-    dynamic value, // double
+    dynamic value, // RangeValues
     RegExp? validateRegEx,
     int? weight,
     FocusNode? focusNode,
@@ -115,12 +115,13 @@ class HZFFormSliderModel extends HZFFormFieldModel {
     bool? enableReadOnly,
   })  : assert(min < max, 'Min value must be less than max value'),
         assert(
-            defaultValue == null ||
-                (defaultValue >= min && defaultValue <= max),
-            'Default value must be between min and max'),
+            defaultRange == null ||
+                (defaultRange.start >= min && defaultRange.end <= max),
+            'Default range must be between min and max'),
+        assert(minSpan == null || minSpan > 0, 'Minimum span must be positive'),
         super(
           tag: tag,
-          type: HZFFormFieldTypeEnum.slider,
+          type: HZFFormFieldTypeEnum.sliderRange,
           title: title,
           errorMessage: errorMessage,
           helpMessage: helpMessage,
@@ -143,40 +144,34 @@ class HZFFormSliderModel extends HZFFormFieldModel {
 /*
 USAGE:
 
-// Basic price slider
-final priceSlider = HZFFormSliderModel(
-  tag: 'price',
+// Price range filter
+final priceRangeFilter = HZFFormSliderRangeModel(
+  tag: 'priceRange',
   title: 'Price Range',
   min: 0,
-  max: 100,
-  defaultValue: 50,
+  max: 1000,
+  defaultRange: RangeValues(200, 800),
   divisions: 10,
   valuePrefix: '\$',
+  minSpan: 100, // Minimum $100 range
   activeColor: Colors.green,
+  onChangeEnd: (range) => filterProducts(range.start, range.end),
 );
 
-// Weight slider with custom formatting
-final weightSlider = HZFFormSliderModel(
-  tag: 'weight',
-  title: 'Weight',
+// Date range with custom formatter
+final dateRangeSlider = HZFFormSliderRangeModel(
+  tag: 'dateRange',
+  title: 'Select Date Range',
   min: 0,
-  max: 200,
-  valueSuffix: 'kg',
-  decimalPrecision: 0,
-  formatValue: (value) => value.toInt().toString(),
-  onChangeEnd: (value) => print('Final weight: $value kg'),
-);
-
-// Rating slider
-final ratingSlider = HZFFormSliderModel(
-  tag: 'rating',
-  title: 'Rate Your Experience',
-  min: 1,
-  max: 5,
-  divisions: 4,
-  defaultValue: 3,
-  formatValue: (value) => '${value.toInt()} ★',
-  activeColor: Colors.amber,
+  max: 30,
+  defaultRange: RangeValues(5, 15),
+  divisions: 30,
+  // Convert slider values to date strings
+  formatValue: (value) {
+    final date = DateTime.now().add(Duration(days: value.toInt()));
+    return '${date.month}/${date.day}';
+  },
+  onChanged: (range) => print('Selected dates: ${range.start.toInt()}-${range.end.toInt()} days'),
 );
 
 */

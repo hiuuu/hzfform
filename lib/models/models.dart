@@ -14,3 +14,8 @@ export 'slider_model.dart';
 export 'number_model.dart';
 export 'radio_group_model.dart';
 export 'time_picker_model.dart';
+export 'slider_range_model.dart';
+export 'search_dropdown_model.dart';
+export 'meta_data_model.dart';
+export 'map_picker_model.dart';
+export 'color_picker_model.dart';

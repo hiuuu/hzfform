@@ -64,6 +64,25 @@ enum MaskType {
   currency, // Decimal format
 }
 
+enum MetaDataOutputFormat {
+  list, // List<MetaDataEntry>
+  map, // Map<String, dynamic>
+}
+
+/// Add button position
+enum AddButtonPosition {
+  header, // Next to headers
+  bottom, // Below all entries
+}
+
+/// Color picker modes
+enum ColorPickerMode {
+  material, // Material design colors
+  rgb, // RGB sliders
+  hsl, // HSL picker
+  wheel, // Color wheel
+}
+
 enum HZFFormFieldTypeEnum {
   password,
   text,
@@ -77,9 +96,14 @@ enum HZFFormFieldTypeEnum {
   radioGroup,
   pinCode,
   slider,
+  sliderRange,
   bankCard,
   imagePicker,
   multiImagePicker,
   radioChips,
   checkChips,
+  searchableDropdown,
+  metaData,
+  mapPicker,
+  colorPicker,
 }

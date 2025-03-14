@@ -170,14 +170,23 @@ class HZFFormFieldFactory {
       case HZFFormFieldTypeEnum.radioGroup:
         return RadioGroupFieldBuilder().build(model, controller, context);
 
-      // case HZFFormFieldTypeEnum.autocomplete:
-      //   return AutocompleteFieldBuilder().build(model, controller, context);
+      case HZFFormFieldTypeEnum.slider:
+        return SliderBuilder().build(model, controller, context);
 
-      // case HZFFormFieldTypeEnum.filePicker:
-      //   return FilePickerBuilder().build(model, controller, context);
+      case HZFFormFieldTypeEnum.sliderRange:
+        return SliderRangeBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.bankCard:
         return BankCardFieldBuilder().build(model, controller, context);
+
+      case HZFFormFieldTypeEnum.searchableDropdown:
+        return SearchableDropdownBuilder().build(model, controller, context);
+
+      case HZFFormFieldTypeEnum.mapPicker:
+        return MapPickerBuilder().build(model, controller, context);
+
+      case HZFFormFieldTypeEnum.colorPicker:
+        return ColorPickerBuilder().build(model, controller, context);
 
       default:
         return const SizedBox(
@@ -187,5 +196,5 @@ class HZFFormFieldFactory {
   }
 }
 
-// TODO: please generate SliderBuilder, SliderRangeBuilder, SearchableDropDownBuilder with autocomplete,  MapPickerBuilder ...
+// TODO: please generate  ColorPickerBuilder ...
 // TODO: RTL support and localization and themes
