@@ -339,28 +339,19 @@ class HZFFormFieldWidget extends StatelessWidget {
         builder.build(model, controller, context),
 
         // Error message
-        AnimatedBuilder(
-          animation: controller,
-          builder: (context, _) {
-            final error = controller.getFieldError(model.tag);
+        Builder(builder: (context) {
+          final error = controller.getFieldError(model.tag);
+          if (error == null) return const SizedBox.shrink();
 
-            if (error == null) {
-              return const SizedBox.shrink();
-            }
-
-            return Padding(
-              padding: const EdgeInsets.only(top: 4.0),
-              child: Text(
-                error,
-                style: style.errorStyle ??
-                    TextStyle(
-                      color: Colors.red[700],
-                      fontSize: 12,
-                    ),
-              ),
-            );
-          },
-        ),
+          return Padding(
+            padding: const EdgeInsets.only(top: 4.0),
+            child: Text(
+              error,
+              style: style.errorStyle ??
+                  TextStyle(color: Colors.red[700], fontSize: 12),
+            ),
+          );
+        }),
 
         // Helper message
         if (model.helpMessage != null)
