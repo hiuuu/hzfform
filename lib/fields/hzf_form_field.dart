@@ -201,7 +201,7 @@ class HZFFormFieldFactory {
         return AudioPickerFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.signaturePicker:
-        return SignaturePickerFieldBuilder().build(model, controller, context);
+        return SignatureFieldBuilder().build(model, controller, context);
 
       default:
         return const SizedBox(
@@ -211,5 +211,4 @@ class HZFFormFieldFactory {
   }
 }
 
-// TODO: please generate  signatureFieldBuilder
 // TODO: RTL support and localization and themes
