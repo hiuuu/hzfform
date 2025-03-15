@@ -203,11 +203,14 @@ class HZFFormFieldFactory {
       case HZFFormFieldTypeEnum.videoPicker:
         return VideoPickerFieldBuilder().build(model, controller, context);
 
-      case HZFFormFieldTypeEnum.audioPicker:
-        return AudioPickerFieldBuilder().build(model, controller, context);
+      // case HZFFormFieldTypeEnum.audioPicker:
+      //   return AudioPickerFieldBuilder().build(model, controller, context);
 
       case HZFFormFieldTypeEnum.signaturePicker:
         return SignatureFieldBuilder().build(model, controller, context);
+
+      case HZFFormFieldTypeEnum.slidableListView:
+        return HZFSlidableListViewBuilder().build(model, controller, context);
 
       default:
         return const SizedBox(

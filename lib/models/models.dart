@@ -25,3 +25,4 @@ export 'doc_picker_model.dart';
 export 'video_picker_model.dart';
 export 'audio_picker_model.dart';
 export 'signature_picker_model.dart';
+export 'slidable_list_view_model.dart';

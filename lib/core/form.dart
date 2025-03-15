@@ -132,8 +132,8 @@ class HZFForm extends StatefulWidget {
           () => DocumentPickerFieldBuilder();
       _fieldBuilders[HZFFormFieldTypeEnum.videoPicker] =
           () => VideoPickerFieldBuilder();
-      _fieldBuilders[HZFFormFieldTypeEnum.audioPicker] =
-          () => AudioPickerFieldBuilder();
+      // _fieldBuilders[HZFFormFieldTypeEnum.audioPicker] =
+      //     () => AudioPickerFieldBuilder();
       _fieldBuilders[HZFFormFieldTypeEnum.imagePicker] =
           () => ImagePickerFieldBuilder();
       _fieldBuilders[HZFFormFieldTypeEnum.multiImagePicker] =
@@ -170,6 +170,8 @@ class HZFForm extends StatefulWidget {
           () => SpinnerFieldBuilder();
       _fieldBuilders[HZFFormFieldTypeEnum.textPlain] =
           () => TextAreaFieldBuilder();
+      _fieldBuilders[HZFFormFieldTypeEnum.slidableListView] =
+          () => HZFSlidableListViewBuilder();
     }
   }
 }

@@ -104,6 +104,12 @@ enum HZFFormButtonType {
   text,
 }
 
+/// Enum for defining the position of a slidable list action.
+enum HZFSlidableActionPosition {
+  leading,
+  trailing,
+}
+
 enum HZFFormFieldTypeEnum {
   password,
   text,
@@ -133,4 +139,5 @@ enum HZFFormFieldTypeEnum {
   audioPicker,
   signaturePicker,
   custom,
+  slidableListView,
 }
